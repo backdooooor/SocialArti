@@ -7,10 +7,10 @@
       <meta http-equiv="content-type" content="text/html; charset=utf8" />
 	
       <!-- Scripts -->
-      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-	  <script type="text/javascript" src="design/scripts/jquery.easyAccordion.js"></script>
-      <script type="text/javascript" src="design/scripts/utility.js"></script>
-
+      <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.min.js"></script>
+	  <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.easyAccordion.js"></script>
+      <script type="text/javascript" src="<? echo base_url();?>design/scripts/utility.js"></script>
+<script type="text/javascript" src="<? echo base_url();?>design/scripts/UI.js"></script>
       <style type="text/css">
 		  html{font-size:62.5%; }
 		  body{font-size:1.2em;color:#294f88}
@@ -70,23 +70,26 @@
 
         <div id="accordion-2">
             <dl>
-                <dt>Вступление</dt>
-                <dd><h2>Вступление</h2><p>Здесь будет какой то текст о великой socialArti</p></dd>
-                <dt>О проекте</dt>
-                <dd><h2>О проекте</h2><p>Здесь будет какой то текст о великом Артемии</p></dd>
-                <dt >Авторизация</dt>
-                <dd><h2>Авторизация</h2><p>email <br/>
-                    <input type="text" name="email" /><br/>
-                     Пароль <br/><input type="text" name="pass" /><br/>
-                    <input type="submit" value="Войти"/></p></dd>
-                <dt>Регистрация</dt>
-                <dd><h2>Регистрация</h2><p>email <br/>
-                    <input type="text" name="email" /><br/>
-                    Фамилия<br/><input type="text" name="surname" /><br/>
-                    Имя <br/><input type="text" name="name" /><br/>
-                    Отчество <br/><input type="text" name="otch" /><br/>
-                    Пароль <br/><input type="text" name="pass1" /><br/>
-                    Повтор Пароля <br/><input type="text" name="pass2" /><br/>
+                <dt id="first_title">Вступление</dt>
+                <dd id="first"><h2>Вступление</h2><p>Здесь будет какой то текст о великой socialArti</p></dd>
+                <dt  id="pos_title">О проекте</dt>
+                <dd id="pos"><h2>О проекте</h2><p>Здесь будет какой то текст о великом Артемии</p></dd>
+                <dt id="auth_title" >Авторизация</dt>
+                <dd id="auth"><h2>Авторизация</h2><p> <div id="auth_error"></div>
+                        <br/><form  method="POST" onSubmit="doAuth();return false;">email <br/>
+                                           <input type="text" name="email" id="email" /><br/>
+                     Пароль <br/><input type="password" name="pass" id="pass" /><br/>
+                    <input type="submit" value="Войти"/></form></p></dd>
+                <dt id="reg_title">Регистрация</dt>
+                <dd id="reg"><h2>Регистрация</h2><p><div id="reg_error"></div><br/><form  method="POST" onSubmit="doRegister();return false;">email <br/>
+                    <input type="text" name="email" id="reg_email" /><br/>
+                    Фамилия<br/><input type="text" name="surname" id="reg_surname" /><br/>
+                    Имя <br/><input type="text" name="name" id="reg_name" /><br/>
+                    Отчество <br/><input type="text" name="otch" id="reg_otch" /><br/>
+                    Откуда ты<br/><input type="text" name="location" id="reg_location" /><br/>
+                    Пароль <br/><input type="password" name="pass1" id="reg_pass1" /><br/>
+                    Повтор Пароля <br/><input type="password" name="pass2" id="reg_pass2" /><br/>
+                    <input type="submit" value="Регистрация"></form>
                     </p></dd>
            </dl>
         </div>
