@@ -44,13 +44,24 @@ $this->load->library('session');
     else
         return "0";
    }
-   function getProfile(){
-/*
- *
- * serialize($input);
- * unserialize($input);
- */
+   function getProfile($var,$opt="id"){
+if($var==null or $var=="") return "";
+ $this->db->where($opt,$var);
+$query = $this->db->get('users');
+return $query->result();
        
+   }
+   function updateProfile($id_user,$profile){
+       if($id_user==null or $id_user=="" or !(int)$id_user) return false;
+       if($profile==null or  $profile=="") return false;
+       $data = array(
+               'profile' => $profile
+
+            );
+
+$this->db->where('id', $id_user);
+$this->db->update('users', $data);
+return true;
    }
 
 }

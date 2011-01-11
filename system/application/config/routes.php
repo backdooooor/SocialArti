@@ -42,7 +42,7 @@
 
 $route['default_controller'] = "welcome";
 $route['scaffolding_trigger'] = "";
-
+$route['([a-z,A-Z,0-9]+)']="statics/profile/$1";
 
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */

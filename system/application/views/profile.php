@@ -1,25 +1,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-	  <title>socialArti - Первая НЕСОЦИАЛЬНАЯ СЕТЬ!</title>
+	  <title>{title}</title>
 
       <!-- Meta -->
       <meta http-equiv="content-type" content="text/html; charset=utf8" />
-	
+
       <!-- Scripts -->
       <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.min.js"></script>
 	  <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.easyAccordion.js"></script>
-      <script type="text/javascript" src="<? echo base_url();?>design/scripts/utility.js"></script>
+      <script type="text/javascript" src="<? echo base_url();?>design/scripts/profile.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/UI.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/interface.js"></script>
-
 <link rel="stylesheet" href="<? echo base_url();?>design/style.css" type="text/css" media="screen, projection" />
-<link rel="stylesheet" href="<? echo base_url();?>design/css/styles.css" type="text/css" media="screen, projection" />
 <script type="text/javascript">
+    
+      	$.post(
+  '/./index.php/ajax/checkAuth/',
+  {
 
-    begin();
-    myMicronews();
-    </script>
+     },
+ function(data){
+if(data=="1"){
+ auth=true;
+$("#isauth").show();
+doUpdate_profile();
+ myMicronews();
+ setTimeout(checkNewMessage, 1000);
+}else {
+  $("#isauth").hide();
+}
+
+ }
+);
+</script>
       <style type="text/css">
 		  html{font-size:62.5%; }
 		  body{font-size:1.2em;color:#294f88}
@@ -46,9 +60,9 @@
 
 		/* FEEL FREE TO CUSTOMIZE THE FOLLOWING RULES */
 
-		dd p{line-height:120%; overflow: auto;}
+		dd p{line-height:120%}
 
-		
+
 
 		#accordion-2{width:700px;height:500px;padding:30px;background:#fff;border:1px solid #b5c9e8}
 		#accordion-2 h2{font-size:2.5em;margin-top:10px}
@@ -57,13 +71,13 @@
 		#accordion-2 dt.active{cursor:pointer;color:#fff;background:#fff url(design/images/slide-title-active-2.jpg) 0 0 no-repeat}
 		#accordion-2 dt.hover{color:#68889b;}
 		#accordion-2 dt.active.hover{color:#fff}
-		#accordion-2 dd{    overflow: auto;padding:25px;background:url(design/images/slide.jpg) bottom left repeat-x;border:1px solid #dbe9ea;border-left:0;margin-right:3px}
+		#accordion-2 dd{padding:25px;background:url(design/images/slide.jpg) bottom left repeat-x;border:1px solid #dbe9ea;border-left:0;margin-right:3px}
 		#accordion-2 .slide-number{color:#68889b;left:10px;font-weight:bold}
 		#accordion-2 .active .slide-number{color:#fff}
 		#accordion-2 a{color:#68889b}
 		#accordion-2 dd img{float:right;margin:0 0 0 30px;position:relative;top:-20px}
 
-		
+
 
       </style>
 
@@ -76,27 +90,35 @@
 
 
 
-        <table cellpadding="50"><tr><td>
+<table cellpadding="50"><tr><td>
         <div id="accordion-2">
             <dl>
                 <dt id="first_title">Вступление</dt>
-                <dd id="first"></dd>
+                <dd id="first"><h2>Вступление</h2><p>Здесь будет какой то текст о великой socialArti</p></dd>
                 <dt  id="pos_title">О проекте</dt>
-                <dd id="pos"></dd>
-                <dt id="auth_title" >Авторизация</dt>
-                <dd id="auth"></dd>
+                <dd id="pos"><h2>О проекте</h2><p>Здесь будет какой то текст о великом Артемии</p></dd>
+                <dt id="auth_title" >Страница пользователя</dt>
+                <dd id="auth">{content}</dd>
                 <dt id="reg_title">Регистрация</dt>
-                <dd id="reg"></dd>
+                <dd id="reg"><h2>Регистрация</h2><p><div id="reg_error"></div><br/><form  method="POST" onSubmit="doRegister();return false;">email <br/>
+                    <input type="text" name="email" id="reg_email" /><br/>
+                    Фамилия<br/><input type="text" name="surname" id="reg_surname" /><br/>
+                    Имя <br/><input type="text" name="name" id="reg_name" /><br/>
+                    Отчество <br/><input type="text" name="otch" id="reg_otch" /><br/>
+                    Откуда ты<br/><input type="text" name="location" id="reg_location" /><br/>
+                    Пароль <br/><input type="password" name="pass1" id="reg_pass1" /><br/>
+                    Повтор Пароля <br/><input type="password" name="pass2" id="reg_pass2" /><br/>
+                    <input type="submit" value="Регистрация"></form>
+                    </p></dd>
            </dl>
-        </div></td><td>
-       <div id="isauth" style="display:none;"
+        </div></td><td><div id="isauth" style="display:none;"
           <h2>Быстрые ссылки</h2>
            <table><tr>
-            <td><a href="#Message"  id="incmessage" onclick="getMessage();return false;"><img src="<? echo base_url();?>design/menu/incomming.png" width="50px" height="50px" title="Входящие сообщения" /></a></td>
+            <td><a href="#Message" onclick="getMessage();return false;"><img src="<? echo base_url();?>design/menu/incomming.png" width="50px" height="50px" title="Входящие сообщения" /></a></td>
             <td><a  href="#draft" onclick="doNewMessage();return false;"><img src="<? echo base_url();?>design/menu/new_message.png" width="50px" height="50px"title="Написать новое сообщение" /></a></td>
                <td><a  href="<? echo base_url();?>" ><img src="<? echo base_url();?>design/menu/edit_user.png" title="Мой профиль" width="50px" height="50px" /></a></td>
                </tr>
-                <tr>
+               <tr>
               <td><a href="#Request"  id="incfriends" onclick="getRequest();return false;"><img src="<? echo base_url();?>design/menu/friends.png" width="50px" height="50px" title="Запросы на дружбу" /></a></td>
               <td>вапвап</td><td></td></tr>
            </table>
@@ -104,12 +126,11 @@
             <h2>Четвертая ссылка</h2>
             <h2>Пятая ссылка</h2>
             <h2><a href="#" onclick="logout('1');">Выход</a></h2></div>
-            
-                
                                                     </td></tr>
 </table>
+
    		<p><a href="http://readyou.ru">Артемий Татаринов &copy; 2011</a></p>
-                 <div id="window">
+                                 <div id="window">
 
 <div id="windowTop">
 

@@ -6,10 +6,12 @@ class Welcome extends Controller {
 	{
 		parent::Controller();
                 $this->load->helper("url");
+               //$this->session->sess_destroy();
 	}
 	
 	function index()
 	{
+                 
 		$this->load->view('static');
                 
 	}

@@ -6,10 +6,16 @@ class Ajax extends Controller {
 	{
 		parent::Controller();
                 $this->load->model("User");
+                $this->load->model("Template");
                 $this->load->library('session');
                 $this->load->helper('url');
+                $this->load->model("Filter");
+                $this->load->model("Search");
+                $this->load->model("Friends");
+                   $this->load->model("Micronews");
+                   $this->load->model("Message");
 	}
-function _remap($method){
+function _remap1($method){
       
         if(IS_AJAX){
             $pars = $this->uri->segment_array();
@@ -46,8 +52,11 @@ function _remap($method){
         $profile["name"]=$this->input->post("name");
         $profile["surname"]=$this->input->post("surname");
         $profile["otch"]=$this->input->post("otch");
-        $profile["location"]=$this->input->post("from");
-        if($email==null or $email=="" or $profile["name"]==null or $profile["name"]=="" or $profile["surname"]=="" or  $profile["surname"]==null  or $profile["otch"]==""  or $profile["otch"]==null  or   $profile["location"]=="" or $profile["location"]==null){
+        $profile["from"]=$this->input->post("from");
+        $profile["icq"]="не указана";
+        $profile["jabber"]="не указан";
+        $profile["skype"]="не указан";
+        if($email==null or $email=="" or $profile["name"]==null or $profile["name"]=="" or $profile["surname"]=="" or  $profile["surname"]==null  or $profile["otch"]==""  or $profile["otch"]==null  or   $profile["from"]=="" or $profile["from"]==null){
            echo "0";
            return false;
 
@@ -68,8 +77,8 @@ function _remap($method){
         function doMy(){
             if($this->User->checkAuth()){
                 $profile=unserialize($this->session->userdata('profile'));
-                $text="<h2>Моя страница</h2><p>".$profile["name"]."<br/>".$profile["surname"]."<br/>".$profile["otch"]."<br/>".$profile["location"]."</p>";
-                echo $text;
+               
+                echo $this->Template->doMyPage($profile);
             } else {
                echo "Вы не авторизованы!";
                 }
@@ -83,6 +92,144 @@ function _remap($method){
               echo "0";
           }
          }
+         function doSearch(){
+            $search_str=$this->Filter->doHTML($this->input->post("search"));
+            foreach($this->Search->doSearch($search_str) as $row){
+                
+                echo $this->Template->doPreview($row);
+            }
+            function doAddMyFriends($id_to){
+                if($this->User->checkAuth() and (int)$id_to){
+                  $id_from=(int)$this->session->userdata('id');
+                  $text=$this->Filter->doHTML($this->input->post("text"));
+                  echo $this->Friends->doAdd($id_from,$id_to,$text);
+                }else {
 
+                    echo "0";
+                }
+
+            }
+                  
+
+         }
+              function doListFriends(){
+               
+              if($this->User->checkAuth() ){
+                $id_user=(int)$this->session->userdata('id');
+                foreach($this->Friends->getFriends($id_user) as $row){
+            
+                      echo $this->Template->doPreview($row,1);
+                }
+              }
+
+            }
+            function  getMicroNews(){
+               if($this->User->checkAuth()){
+                    $id_user=(int)$this->session->userdata('id');
+                foreach($this->Micronews->getMNews($id_user) as $row){
+                       
+                      echo $this->Template->doMicroNews($row,$row->text,$row->data);
+                }
+                  
+               }
+            }
+            function setStatus(){
+                
+                if($this->User->checkAuth()){
+                    $id_user=(int)$this->session->userdata('id');
+                    $status=$this->Filter->doHTML($this->input->post("status"));
+                    //serialize
+                    $profile=unserialize($this->session->userdata('profile'));
+                    $profile["status"]=$status;
+                    $profile=serialize($profile);
+                
+                    if($this->User->updateProfile($id_user,$profile)){
+                        $newdata = array(
+                   'id'  => $id_user,
+                   'profile'     => $profile,
+                   'logged_in' => TRUE
+               );
+
+                     $this->session->set_userdata($newdata);
+                     $this->Micronews->add($id_user,$status);
+                     echo $status;
+                    }else {
+                      echo "0";
+                    }
+
+                }
+            }
+            function newMessage(){
+                  if($this->User->checkAuth()){
+                    $id_user=(int)$this->session->userdata('id');
+                    $id_to=(int)$this->input->post("id_user");
+                    $text=$this->Filter->doHTML($this->input->post("text"));
+                    $this->Message->add($id_user,$id_to,$text);
+                    echo "1";
+                  }
+            }
+            function doSelect(){
+                  if($this->User->checkAuth() ){
+                $id_user=(int)$this->session->userdata('id');
+                foreach($this->Friends->getFriends($id_user) as $row){
+               
+                      echo $this->Template->doSelect($row);
+                }
+              }
+            }
+            function getMessage(){
+                      if($this->User->checkAuth() ){
+                $id_user=(int)$this->session->userdata('id');
+                
+                 foreach($this->Message->get($id_user) as $row){
+                   
+                      echo $this->Template->doMessage($row);
+                }
+                      }
+            }
+            function doReadMessage($id_message){
+                if($id_message==null or $id_message=="0" or $id_message=="" or !(int)$id_message) return false;
+                if($this->User->checkAuth() ){
+                    $this->Message->doRead($id_message);
+                }
+                }
+             function checkNewMessage(){
+ if($this->User->checkAuth() ){
+                $id_user=(int)$this->session->userdata('id');
+                
+                echo $this->Message->checkNewMessage($id_user);
+
+             }
+             }
+             function logout(){
+
+                 $this->session->sess_destroy(); 
+             }
+             function addfriends($id_to){
+                  if($this->User->checkAuth() ){
+                $id_user=(int)$this->session->userdata('id');
+                $text=$this->Filter->doHTML($this->input->post("text"));
+                   if(!$this->Friends->isFriends($id_user,$id_to)){
+                         $this->Friends->doAdd($id_user,$id_to,$text);
+           }
+                  }
+             }
+             function doRequest(){
+                    if($this->User->checkAuth() ){
+                $id_user=(int)$this->session->userdata('id');
+                foreach($this->Friends->getRequest($id_user)as $row){
+                    echo  $this->Template->doRequest($row);
+                }
+             }
+             }
+             function doEditFriend($id_zapr,$bool){
+                 if($id_zapr==null or $id_zapr=="" or !(int)$id_zapr or $bool==null or $bool=="" or !(int)$bool) return false;
+                   if($this->User->checkAuth() ){
+                 $id_user=(int)$this->session->userdata('id');
+                $this->Friends->doEdit($id_zapr,$bool);
+                $this->Micronews->Add($id_user,"Подружился с новым пользователем!!");
+                   }
+
+             }
 
 }

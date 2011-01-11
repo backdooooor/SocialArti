@@ -1,0 +1,93 @@
+.tzSelect{
+
+	/* Контейнер для нового элемента select */
+
+	height:34px;
+	display:inline-block;
+	min-width:100px;
+	position:relative;
+
+	/* Предварительная загрузка фонового изображения для выпадающих пунктов */
+	background:url("../img/dropdown_slice.png") no-repeat -99999px;
+}
+
+.tzSelect .selectBox{
+	position:absolute;
+
+	height:100%;
+	width:100%;
+
+	/* Установка шрифта */
+
+
+
+	/* Использование множественных фонов CSS3 */
+
+	background:url('../img/select_slice.png') repeat-x #ddd;
+	background-image:url('../img/select_slice.png'),url('../img/select_slice.png'),url('../img/select_slice.png'),url('../img/select_slice.png');
+	background-position:0 -136px, right -204px, 50% -68px, 0 0;
+	background-repeat: no-repeat, no-repeat, no-repeat, repeat-x;
+
+	cursor:pointer;
+
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+}
+
+.tzSelect .selectBox:hover,
+.tzSelect .selectBox.expanded{
+	background-position:0 -170px, right -238px, 50% -102px, 0 -34px;
+	color:#2c5667;
+	text-shadow:1px 1px 0 #9bc2d0;
+}
+
+.tzSelect .dropDown{
+	position:absolute;
+	top:40px;
+	left:0;
+	width:100%;
+	
+	list-style:none;
+
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing:border-box;
+
+	-moz-box-shadow:0 0 4px #111;
+	-webkit-box-shadow:0 0 4px #111;
+	box-shadow:0 0 4px #111;
+}
+
+
+.tzSelect li{
+	height:85px;
+	cursor:pointer;
+	position:relative;
+
+	/* Использование множественных фонов CSS3 */
+
+	
+}
+
+.tzSelect li:hover{
+	background-position: 50% -256px, 0 -85px, 0 0;
+}
+
+.tzSelect li span{
+	left:88px;
+	position:absolute;
+	top:27px;
+}
+
+.tzSelect li i{
+	color:#999999;
+	display:block;
+	font-size:12px;
+}
+
+.tzSelect li img{
+	left:9px;
+	position:absolute;
+	
+}
