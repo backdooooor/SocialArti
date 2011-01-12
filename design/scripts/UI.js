@@ -517,3 +517,61 @@ function doEditFriend(id_zapr,bool){
  }
 );
 }
+
+function doSaveContact(){
+var edit_icq=$("#edit_icq").val();
+var edit_jabber=$("#edit_jabber").val();
+var edit_skype=$("#edit_skype").val();
+  	$.post(
+  '/./index.php/ajax/doEditContact/',
+  {
+icq:edit_icq,
+jabber:edit_jabber,
+skype:edit_skype
+     },
+ function(data){
+
+ }
+);
+alert('Контактные данные успешно обновлены!');
+}
+ function doLoadPhoto(){
+
+ 
+var button = $('#load_photo');
+  $.ajax_upload(button, {
+						action : 'statics/load_photo',
+						name : 'myfile',
+						onSubmit : function(file, ext) {
+							// РїРѕРєР°Р·С‹РІР°РµРј РєР°СЂС‚РёРЅРєСѓ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+				
+
+							/*
+							 * Р’С‹РєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ РЅР° РІСЂРµРјСЏ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+							 */
+							this.disable();
+
+						},
+						onComplete : function(file, response) {
+							// СѓР±РёСЂР°РµРј РєР°СЂС‚РёРЅРєСѓ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+							//$("img#load").attr("src", "loadstop.gif");
+							//$("#uploadButton font").text('Р—Р°РіСЂСѓР·РёС‚СЊ');
+
+							// СЃРЅРѕРІР° РІРєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ
+                                                        
+                                                        if(response=="0"){
+                                                            alert('При загрузке файла произошла ошибка,попробуйте еще раз')
+                                                        } else {
+							this.enable();
+                                                        $("#user_photo").attr("src", response);
+                                                         alert('успешно загружено!');
+                                                         myMicronews();
+                                                        }
+							// РїРѕРєР°Р·С‹РІР°РµРј С‡С‚Рѕ С„Р°Р№Р» Р·Р°РіСЂСѓР¶РµРЅ
+							//$("<li>" + file + "</li>").appendTo("#files");
+
+						}
+					});
+                   
+
+ }

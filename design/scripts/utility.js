@@ -22,7 +22,7 @@ $(document).ready(function () {
 			autoStart: false,
 			slideInterval: 5000
 	}); 
-        
+  
 $('#windowClose').bind(
 
 'click',

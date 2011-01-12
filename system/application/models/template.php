@@ -9,7 +9,7 @@ if($status==null or $status==""){
 }
 if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
 $this->load->helper("url");
-$code="<h2>".$masive['surname']." ".$masive['name']."</h2><p><form onSubmit='setStatus();return false;' method='POST'><textarea name='status' id='status'  rows=3 cols=35 >".$status."</textarea><br><input type=submit value='Обновить'></form><br/><table><tr><td><img src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ></td><td>Откуда:".$location."<br>Контакты:<br>icq:".$masive['icq']."<br>jabber:".$masive['jabber']."<br>skype:".$masive['skype']."<br></td></tr></table></p>";
+$code="<h2>".$masive['surname']." ".$masive['name']."</h2><p><form onSubmit='setStatus();return false;' method='POST'><textarea name='status' id='status'  rows=3 cols=35 >".$status."</textarea><br><input type=submit value='Обновить'></form><br/><table><tr><td><img  id='user_photo' src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><a  id='load_photo' href='#' onclick='doLoadPhoto();return false'>Загрузка фотографии</a></td><td>Откуда:".$location."<br>Контакты:<form onSubmit='doSaveContact();return false;'><br>icq:<input type=text  id='edit_icq' value='".$masive['icq']."'><br>jabber:<input type=text id='edit_jabber' value='".$masive['jabber']."'><br>skype:<input type=text id='edit_skype' value='".$masive['skype']."'><br><input type=submit value='Сохранить'></form><br></td></tr></table></p>";
 return $code;
 
 }
@@ -53,7 +53,7 @@ $send_message="<a href='#' onclick='".$action."'>Отправить сообще
      $CI =& get_instance();
         $CI->load->model('Friends');
 $action_friends='doAddFriends('.$row->id.',"'.$title.'","'.$photo_url.'");return false;';
-if(!$CI->Friends->isFriends($this->session->userdata('id'),$row->id)){
+if(!$CI->Friends->isFriends($this->session->userdata('id'),$row->id)  and $this->session->userdata('id')!=$row->id ){
 $send_message=$send_message."<br><a href='#' onclick='".$action_friends."'>Добавить в друзья</a>";
 }
 $this->load->helper("url");

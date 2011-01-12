@@ -30,7 +30,19 @@ $this->db->order_by("micronews.data", "desc");
 
 $query = $this->db->get();
 //$this->db->last_query(); вывод последнего  запроса.!
+if($query->num_rows()!=0){
        return $query->result();
+} else {
+     $this->db->select('micronews.text,users.nick,users.id,users.profile,micronews.data');
+$this->db->from('micronews');
+$this->db->join('users', 'users.id = micronews.id_user','right outer');
+$this->db->where('micronews.id_user', $id_user);
+
+$this->db->order_by("micronews.data", "desc");
+
+$query = $this->db->get();
+return $query->result();
+}
    }
 }
 

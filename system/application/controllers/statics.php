@@ -53,4 +53,52 @@ class Statics extends Controller {
                echo "0";
            }
         }
+        function load_photo(){
+            //TODO:сделать проверку на тип файла!
+
+                  if($this->User->checkAuth()){
+                    $id_user=(int)$this->session->userdata('id');
+                         $blacklist = array(".php", ".phtml", ".php3", ".php4");
+ foreach ($blacklist as $item) {
+  if(preg_match("/$item\$/i", $_FILES['myfile']['name'])) {
+   echo "0";
+  return "";
+   }
+  }
+
+  $uploaddir = 'photo/';
+  $uploadfile = $uploaddir."".$id_user.".jpg";;
+
+  if (move_uploaded_file($_FILES['myfile']['tmp_name'], $uploadfile)) {
+
+   $url=base_url()."photo/".$id_user.".jpg";
+   echo $url;
+  } else {
+   echo "0";
+   return "";
+  }
+                    //serialize
+                    $profile=unserialize($this->session->userdata('profile'));
+                    $profile["photo"]=$id_user.".jpg";
+
+                    $profile=serialize($profile);
+
+                    if($this->User->updateProfile($id_user,$profile)){
+                        $newdata = array(
+                   'id'  => $id_user,
+                   'profile'     => $profile,
+                   'logged_in' => TRUE
+               );
+
+                     $this->session->set_userdata($newdata);
+                     $this->Micronews->add($id_user,"Обновил фотографию...");
+                    
+                    }else {
+                      echo "0";
+                      return "";
+                    }
+
+                }
+          
+        }
 }

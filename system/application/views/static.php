@@ -12,7 +12,7 @@
       <script type="text/javascript" src="<? echo base_url();?>design/scripts/utility.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/UI.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/interface.js"></script>
-
+<script type="text/javascript" src="<? echo base_url();?>design/scripts/ajaxupload.js"></script>
 <link rel="stylesheet" href="<? echo base_url();?>design/style.css" type="text/css" media="screen, projection" />
 <link rel="stylesheet" href="<? echo base_url();?>design/css/styles.css" type="text/css" media="screen, projection" />
 <script type="text/javascript">

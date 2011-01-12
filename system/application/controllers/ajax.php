@@ -231,5 +231,34 @@ function _remap1($method){
                    }
 
              }
+             function doEditContact(){
+                   if($this->User->checkAuth()){
+                    $id_user=(int)$this->session->userdata('id');
+                    $icq=$this->Filter->doHTML($this->input->post("icq"));
+                    $skype=$this->Filter->doHTML($this->input->post("skype"));
+                    $jabber=$this->Filter->doHTML($this->input->post("jabber"));
+                    //serialize
+                    $profile=unserialize($this->session->userdata('profile'));
+                    $profile["icq"]=$icq;
+                    $profile["skype"]=$skype;
+                    $profile["jabber"]=$jabber;
+                    $profile=serialize($profile);
+
+                    if($this->User->updateProfile($id_user,$profile)){
+                        $newdata = array(
+                   'id'  => $id_user,
+                   'profile'     => $profile,
+                   'logged_in' => TRUE
+               );
+
+                     $this->session->set_userdata($newdata);
+                     $this->Micronews->add($id_user,"Обновил контактные данные");
+                     echo "1";
+                    }else {
+                      echo "0";
+                    }
+
+                }
+             }
 
 }
