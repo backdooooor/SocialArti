@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
 <head>
 	  <title>socialArti - Социальная сеть</title>
 
@@ -7,18 +7,18 @@
       <meta http-equiv="content-type" content="text/html; charset=utf8" />
 	
       <!-- Scripts -->
-      <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.min.js"></script>
+      <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery-1.4.3.js"></script>
 	  <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.easyAccordion.js"></script>
-      <script type="text/javascript" src="<? echo base_url();?>design/scripts/utility.js"></script>
+     
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/UI.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/interface.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/ajaxupload.js"></script>
 <link rel="stylesheet" href="<? echo base_url();?>design/style.css" type="text/css" media="screen, projection" />
 <link rel="stylesheet" href="<? echo base_url();?>design/css/styles.css" type="text/css" media="screen, projection" />
+ <script type="text/javascript" src="<? echo base_url();?>design/scripts/utility.js"></script>
 <script type="text/javascript">
 
-    begin();
-    myMicronews();
+  
     </script>
       <style type="text/css">
 		  html{font-size:62.5%; }

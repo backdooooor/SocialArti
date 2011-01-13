@@ -1,7 +1,4 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 var base_url="http://socialarti.me/";
 var auth=false;
 function begin(){

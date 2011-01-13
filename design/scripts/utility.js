@@ -1,4 +1,4 @@
-
+var IE='\v'=='v';
 
 $(document).ready(function () {
 							
@@ -22,7 +22,9 @@ $(document).ready(function () {
 			autoStart: false,
 			slideInterval: 5000
 	}); 
-  
+    begin();
+      myMicronews();
+    
 $('#windowClose').bind(
 
 'click',
@@ -30,21 +32,21 @@ $('#windowClose').bind(
 function()
 
 {
-
+if(!IE){
 $('#window').TransferTo(
 
 {
 
 to:'windowOpen',
 
-className:'transferer2', 
+className:'transferer2',
 
 duration: 400
 
 }
 
 ).hide();
-
+}
 }
 
 );
@@ -71,6 +73,7 @@ $('#windowMax').show();
 }
 
 );
+if(!IE){
 $('#window').Resizable(
 
 {
@@ -109,4 +112,5 @@ windowContentEl.css('height', size.height - 48 + 'px');
 }
 
 );
+}
 });

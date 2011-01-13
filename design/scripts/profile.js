@@ -1,4 +1,4 @@
-
+var IE='\v'=='v';
 
 $(document).ready(function () {
 
@@ -31,7 +31,7 @@ $('#windowClose').bind(
 function()
 
 {
-
+if(!IE){
 $('#window').TransferTo(
 
 {
@@ -45,7 +45,7 @@ duration: 400
 }
 
 ).hide();
-
+}
 }
 
 );
@@ -72,6 +72,7 @@ $('#windowMax').show();
 }
 
 );
+if(!IE){
 $('#window').Resizable(
 
 {
@@ -110,4 +111,5 @@ windowContentEl.css('height', size.height - 48 + 'px');
 }
 
 );
+}
 });
