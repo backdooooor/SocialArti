@@ -575,3 +575,33 @@ var button = $('#load_photo');
                    
 
  }
+ function doComment(id_mnews){
+    
+     $.post(
+  '/./index.php/ajax/doComment/' + id_mnews,
+  {
+
+     },
+ function(data){
+ 
+$("#id_"+id_mnews).html(data);
+
+ }
+);
+ }
+ function doAddComment(id_mnews){
+
+  var text_comment=$("#form_comment").val();
+       $.post(
+  '/./index.php/ajax/addComment/' + id_mnews,
+  {
+  text:text_comment
+     },
+ function(data){
+
+$("#id_"+id_mnews).html(data);
+
+ }
+);
+
+ }

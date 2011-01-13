@@ -14,6 +14,7 @@ class Ajax extends Controller {
                 $this->load->model("Friends");
                    $this->load->model("Micronews");
                    $this->load->model("Message");
+                   $this->load->model("Comments");
 	}
 function _remap1($method){
       
@@ -94,6 +95,7 @@ function _remap1($method){
          }
          function doSearch(){
             $search_str=$this->Filter->doHTML($this->input->post("search"));
+             //$search_str="Artem";
             foreach($this->Search->doSearch($search_str) as $row){
                 
                 echo $this->Template->doPreview($row);
@@ -152,7 +154,7 @@ function _remap1($method){
 
                      $this->session->set_userdata($newdata);
                      $this->Micronews->add($id_user,$status);
-                     echo $status;
+                     echo "1";
                     }else {
                       echo "0";
                     }
@@ -260,5 +262,27 @@ function _remap1($method){
 
                 }
              }
+             function doComment($id_mnews){
+                 if($id_mnews==null or !(int)$id_mnews or $id_mnews=="") return false;
+               
+                 if($this->User->checkAuth()){
+                       
+                     foreach($this->Comments->get($id_mnews) as $row){
+                         echo $this->Template->doComment($row);
+                     }
+                     $form='<form onSubmit="doAddComment('.$id_mnews.');return false;"><input type="text" name="comment" id="form_comment"><br><input type=submit value="Отправить"></form>';
+                     echo  $form;
+                 }
 
+             }
+             function addComment($id_mnews){
+                  if($id_mnews==null or !(int)$id_mnews or $id_mnews=="") return false;
+                 $text=$this->Filter->doHTML($this->input->post('text'));
+                 if($this->User->checkAuth()){
+                       $id_user=(int)$this->session->userdata('id');
+                       $this->Comments->add($id_mnews,$id_user,$text);
+                       $this->doComment($id_mnews);
+
+                 }
+             }
 }

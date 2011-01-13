@@ -66,8 +66,9 @@ function doMicroNews($row,$text,$data){
 
 $nick=$row->nick;
 if($nick==null or $nick=="") $nick=="id".$row->id;
+
 $code="<table cellspacing=20
-><tr><td><a href='".base_url()."".$nick."'>".$masive['surname']." ".$masive['name']."</a><br><br><br><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td>".$data."<h3>".$text."</h3><br><br><br></td></tr></table><br/>";
+><tr><td><a href='".base_url()."".$nick."'>".$masive['surname']." ".$masive['name']."</a><br><br><br><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td>".$data."<h3>".$text."</h3><br><br><a href='#' onclick='doComment(".$row->id_mnews.");'>Комментарии</a></td></tr></table><div id='id_".$row->id_mnews."'></div><br/>";
 return $code;
 }
 function doSelect($row){
@@ -105,6 +106,16 @@ if($nick==null or $nick=="") $nick=="id".$row->id;
 
 $code="<table  style='".$style."' cellspacing=20
 ><tr><td><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='".base_url()."".$nick."'>".$masive['surname']." ".$masive['name']."</a><br><hr>".$row->text."<br><br></td></tr></table><br><center><a href='#' onclick='doEditFriend(".$row->id_zapr.",1)'>Принять</a>&nbsp;&nbsp;<a href='#' onclick='doEditFriend(".$row->id_zapr.",0)'>Отказаться</a></center><br/>";
+return $code;
+}
+function doComment($row){
+     $masive=unserialize($row->profile);
+ if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
+$nick=$row->nick;
+if($nick==null or $nick=="") $nick=="id".$row->id;
+
+$code="<table  style='".$style."' cellspacing=20
+><tr><td><img  width=25px height=25px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='".base_url()."".$nick."'>".$masive['surname']." ".$masive['name']."</a><br><hr>".$row->text."<br><br></td></tr></table><br><br/>";
 return $code;
 }
 

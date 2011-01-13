@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-	  <title>socialArti - Первая НЕСОЦИАЛЬНАЯ СЕТЬ!</title>
+	  <title>socialArti - Социальная сеть</title>
 
       <!-- Meta -->
       <meta http-equiv="content-type" content="text/html; charset=utf8" />
@@ -71,7 +71,7 @@
 <body>
 
     <div class="sample">
-        <h1>socialArti  -  социальная сеть будущего...</h1>
+        <h1>socialARti  - социальная сеть</h1>
 
 
 
@@ -98,12 +98,10 @@
                </tr>
                 <tr>
               <td><a href="#Request"  id="incfriends" onclick="getRequest();return false;"><img src="<? echo base_url();?>design/menu/friends.png" width="50px" height="50px" title="Запросы на дружбу" /></a></td>
-              <td>вапвап</td><td></td></tr>
+              <td><a href="#exit"  id="incfriends" onclick="logout('1');return false;"><img src="<? echo base_url();?>design/menu/exit.png" width="50px" height="50px" title="Выход" /></a></td><td></td></tr>
            </table>
-            <h2>Третья ссылка</h2>
-            <h2>Четвертая ссылка</h2>
-            <h2>Пятая ссылка</h2>
-            <h2><a href="#" onclick="logout('1');">Выход</a></h2></div>
+          
+            </div>
             
                 
                                                     </td></tr>
