@@ -16,7 +16,7 @@ class Ajax extends Controller {
                    $this->load->model("Message");
                    $this->load->model("Comments");
 	}
-function _remap1($method){
+function _remap($method){
       
         if(IS_AJAX){
             $pars = $this->uri->segment_array();
@@ -48,12 +48,12 @@ function _remap1($method){
         function register(){
 
         //регистрация
-        $email=$this->input->post("email");
-        $password=$this->input->post("password");
-        $profile["name"]=$this->input->post("name");
-        $profile["surname"]=$this->input->post("surname");
-        $profile["otch"]=$this->input->post("otch");
-        $profile["from"]=$this->input->post("from");
+        $email=$this->Filter->doHTML($this->input->post("email"));
+        $password=$this->Filter->doHTML($this->input->post("password"));
+        $profile["name"]=$this->Filter->doHTML($this->input->post("name"));
+        $profile["surname"]=$this->Filter->doHTML($this->input->post("surname"));
+        $profile["otch"]=$this->Filter->doHTML($this->input->post("otch"));
+        $profile["from"]=$this->Filter->doHTML($this->input->post("from"));
         $profile["icq"]="не указана";
         $profile["jabber"]="не указан";
         $profile["skype"]="не указан";
@@ -96,11 +96,19 @@ function _remap1($method){
          function doSearch(){
             $search_str=$this->Filter->doHTML($this->input->post("search"));
              //$search_str="Artem";
+            $text="";
             foreach($this->Search->doSearch($search_str) as $row){
                 
-                echo $this->Template->doPreview($row);
+                $text=$text." ".$this->Template->doPreview($row);
             }
-            function doAddMyFriends($id_to){
+          if($text=="") {
+              $text="Ничего не найдено!";
+          }
+          echo $text;
+                  
+
+         }
+           function doAddMyFriends($id_to){
                 if($this->User->checkAuth() and (int)$id_to){
                   $id_from=(int)$this->session->userdata('id');
                   $text=$this->Filter->doHTML($this->input->post("text"));
@@ -111,9 +119,6 @@ function _remap1($method){
                 }
 
             }
-                  
-
-         }
               function doListFriends(){
                
               if($this->User->checkAuth() ){

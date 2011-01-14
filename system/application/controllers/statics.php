@@ -12,15 +12,18 @@ class Statics extends Controller {
                 $this->load->model("Filter");
                 $this->load->model("Search");
                 $this->load->model("Friends");
+                  $this->load->model("Micronews");
 	}
         function profile($nick){
             $opt="";
             $tmp=explode("id",$nick);
+            $id_user="";
             if($tmp[1]!=null or $tmp[1]!=""){
                 $nick=$tmp[1];
                 $opt="id";
             }else {
                 $opt="nick";
+                $id_user=$this->User->getID($nick);
             }
             $this->load->library('parser');
         
@@ -29,6 +32,13 @@ class Statics extends Controller {
           $data["title"]="socialArti - ".$profile["surname"]." ".$profile["name"];
            $data["content"]=$this->Template->doProfilePage($profile,$row);
         }
+
+
+        foreach($this->Micronews->getMNews($id_user) as $row){
+
+                      $data["micronews"]=$data["micronews"]." ".$this->Template->doMicroNews($row,$row->text,$row->data);
+                }
+              
         $this->parser->parse('profile', $data);
 
         }
@@ -77,26 +87,26 @@ class Statics extends Controller {
    echo "0";
    return "";
   }
+
                     //serialize
                     $profile=unserialize($this->session->userdata('profile'));
                     $profile["photo"]=$id_user.".jpg";
 
                     $profile=serialize($profile);
-
-                    if($this->User->updateProfile($id_user,$profile)){
+                    $this->User->updateProfile($id_user,$profile);
+                     
                         $newdata = array(
                    'id'  => $id_user,
                    'profile'     => $profile,
                    'logged_in' => TRUE
                );
-
+                      
+                     $this->session->sess_destroy(); 
                      $this->session->set_userdata($newdata);
                      $this->Micronews->add($id_user,"Обновил фотографию...");
                     
-                    }else {
-                      echo "0";
-                      return "";
-                    }
+                    
+                 
 
                 }
           

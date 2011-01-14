@@ -8,9 +8,7 @@ $(document).ready(function () {
 			slideInterval: 3000
 	});
 	
-	$('#accordion-2').easyAccordion({ 
-			autoStart: false	
-	});
+	
 	
 	$('#accordion-3').easyAccordion({ 
 			autoStart: true,

@@ -25,7 +25,7 @@ if(data=="1"){
  auth=true;
 $("#isauth").show();
 doUpdate_profile();
- myMicronews();
+
  setTimeout(checkNewMessage, 1000);
 }else {
   $("#isauth").hide();
@@ -35,7 +35,7 @@ doUpdate_profile();
 );
 </script>
       <style type="text/css">
-		  html{font-size:62.5%; }
+ html{font-size:62.5%; }
 		  body{font-size:1.2em;color:#294f88}
 		  .sample{margin:30px;border:1px solid #92cdec;background:#d7e7ff;padding:30px}
 		  h1{margin:0 0 20px 0;padding:0;font-size:2em;}
@@ -60,7 +60,7 @@ doUpdate_profile();
 
 		/* FEEL FREE TO CUSTOMIZE THE FOLLOWING RULES */
 
-		dd p{line-height:120%}
+		dd p{line-height:120%; overflow: auto;}
 
 
 
@@ -71,13 +71,11 @@ doUpdate_profile();
 		#accordion-2 dt.active{cursor:pointer;color:#fff;background:#fff url(design/images/slide-title-active-2.jpg) 0 0 no-repeat}
 		#accordion-2 dt.hover{color:#68889b;}
 		#accordion-2 dt.active.hover{color:#fff}
-		#accordion-2 dd{padding:25px;background:url(design/images/slide.jpg) bottom left repeat-x;border:1px solid #dbe9ea;border-left:0;margin-right:3px}
+		#accordion-2 dd{    overflow: auto;padding:25px;background:url(design/images/slide.jpg) bottom left repeat-x;border:1px solid #dbe9ea;border-left:0;margin-right:3px}
 		#accordion-2 .slide-number{color:#68889b;left:10px;font-weight:bold}
 		#accordion-2 .active .slide-number{color:#fff}
 		#accordion-2 a{color:#68889b}
 		#accordion-2 dd img{float:right;margin:0 0 0 30px;position:relative;top:-20px}
-
-
 
       </style>
 
@@ -93,8 +91,8 @@ doUpdate_profile();
 <table cellpadding="50"><tr><td>
         <div id="accordion-2">
             <dl>
-                <dt id="first_title">Вступление</dt>
-                <dd id="first"><h2>Вступление</h2><p>Здесь будет какой то текст о великой socialArti</p></dd>
+                <dt id="first_title">МикроNews</dt>
+                <dd id="first">{micronews}</dd>
                 <dt  id="pos_title">О проекте</dt>
                 <dd id="pos"><h2>О проекте</h2><p>Здесь будет какой то текст о великом Артемии</p></dd>
                 <dt id="auth_title" >Страница пользователя</dt>

@@ -44,6 +44,13 @@ $this->load->library('session');
     else
         return "0";
    }
+   function getID($nick){
+       $this->db->where("nick",$nick);
+     $query = $this->db->get('users');
+     $row = $query->row();
+     
+return  $row->id;
+   }
    function getProfile($var,$opt="id"){
 if($var==null or $var=="") return "";
  $this->db->where($opt,$var);

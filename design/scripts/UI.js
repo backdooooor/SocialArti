@@ -22,6 +22,10 @@ doUpdate();
 
  }
 );
+ $('#accordion-2').easyAccordion({
+			autoStart: false
+	});
+     
     
 }
 function doNotAuth(){
@@ -63,6 +67,7 @@ if(data=="1"){
 $("#auth").html("Вы успешно авторизовались!!");
 $("#isauth").show();
 doUpdate();
+                myMicronews();
 }else {
     auth=false;
   $("#auth_error").html("Некорректные данные!!!");
@@ -72,6 +77,7 @@ doUpdate();
 );
     }
     function doRegister(){
+     var regexp = /^[а-яёa-z0-9]+$/i;
      if(!/^\w+[a-zA-Z0-9_.-]*@{1}\w{1}[a-zA-Z0-9_.-]*\.{1}\w{2,4}$/.test(jQuery("#reg_email").val())) {
 	    $("#reg_error").html("email некорректный");
 	    return false;
@@ -81,22 +87,19 @@ doUpdate();
 	    return false;
 
   }
-  if(!/^\w+[a-zA-Z0-9_.-]+$/.test($("#reg_name").val())){
+  if(!regexp.test($("#reg_name").val())){
 	   $("#reg_error").html("Некорректное значение(Имя)");
 	    return "";
 	}
-          if(!/^\w+[a-zA-Z0-9_.-]+$/.test($("#reg_surname").val())){
+          if(!regexp.test($("#reg_surname").val())){
 	   $("#reg_error").html("Некорректное значение(Фамилия)");
 	    return "";
 	}
-            if(!/^\w+[a-zA-Z0-9_.-]+$/.test($("#reg_otch").val())){
+            if(!regexp.test($("#reg_otch").val())){
 	   $("#reg_error").html("Некорректное значение(Отчество)");
 	    return "";
 	}
-            if(!/^\w+[a-zA-Z0-9_.-]+$/.test($("#reg_location").val())){
-	   $("#reg_error").html("Некорректное значение(Расположение)");
-	    return "";
-	}
+         
         var str1=$("#reg_email").val();
         var str2=$("#reg_pass1").val();
         var str3=$("#reg_name").val();
