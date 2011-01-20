@@ -34,6 +34,7 @@ echo $browser;
 <body>
 
     <div class="sample">
+        <div id="menu_arti"><a href="<? echo base_url(); ?>group1">Новости проекта</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="fastWindow();">Быстрые сообщения</a></div>
         <h1>socialARti  - социальная сеть</h1>
 
 

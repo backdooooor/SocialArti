@@ -90,6 +90,12 @@ $this->db->where('id', $id_user);
 $this->db->update('users', $data);
 return true;
    }
+   function listOnline(){
+
+$query = $this->db->get("ci_sessions");
+
+return $query->result();
+   }
 
 }
 

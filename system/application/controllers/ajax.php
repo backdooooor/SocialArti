@@ -500,5 +500,36 @@ function _remap($method){
                    echo $data["talk"];
                  }
              }
+             function doOnlineUsers(){
+                 if($this->User->checkAuth())
+                  {
+                 foreach($this->User->listOnline() as $row){
+                     $user_data=unserialize($row->user_data);
+                     $id_user=$user_data['id'];
+                     $profile=unserialize($user_data["profile"]);
+                     if(!isset($profile["photo"]) or $profile["photo"]==null or $profile["photo"]=="" ) $profile["photo"]="nophoto.jpg";
+                     echo "<a href='".base_url()."id".$id_user."'>".$profile['surname']." ".$profile["name"]."</a><br>";
+                 }
+                  }
+             }
+             function doSendFastMessage(){
+                   if($this->User->checkAuth()){
+                    $id_user=(int)$this->session->userdata('id');
+                    $text=$this->Filter->doHTML($this->input->post("text"));
+                    $this->Message->addFast($id_user,$text);
+                    echo "1";
+                  }
+             }
+             function doListFastMessage(){
+                 if($this->User->checkAuth())
+                  {
+                    foreach($this->Message->getFast() as $row){
+                        $profile=unserialize($row->profile);
+                         $title="<a href='".base_url()."id".$row->id."'>".$profile["surname"]." ".$profile["name"]."</a>";
+                        echo $title." :".$row->text." ".$row->data."<br>";
+                    }
+                     
+                 }
+             }
 
 }

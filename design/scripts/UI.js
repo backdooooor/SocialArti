@@ -913,3 +913,8 @@ $("#pos").html(data);
  }
 );
 }
+function fastWindow(){
+ if(auth){
+ window.open('fast','','width=700px,height=500px');
+ }
+}

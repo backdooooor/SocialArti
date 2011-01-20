@@ -46,6 +46,7 @@ $route['group([0-9]+)']="statics/group/$1";
 $route['talk([0-9]+)']="statics/group/$1";
 $route['public([0-9]+)']="statics/group/$1";
 $route['([a-z,A-Z,0-9]+)']="statics/profile/$1";
+$route['fast']="statics/message";
 
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */

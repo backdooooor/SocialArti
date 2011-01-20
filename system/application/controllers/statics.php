@@ -214,4 +214,9 @@ if($id_group==null or  $id_group=="" or !(int)$id_group) {
                 }
 
         }
+        function message(){
+            if($this->User->checkAuth()){
+            $this->load->view("message");
+            }
+        }
 }
