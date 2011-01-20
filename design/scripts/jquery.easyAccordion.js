@@ -43,7 +43,7 @@
 		if (jQuery.browser.safari){ var dtTop = (dlHeight-dtWidth)/2; var dtOffset = -dtTop;  /* Safari and Chrome */ }
 		if (jQuery.browser.mozilla){ var dtTop = dlHeight - 20; var dtOffset = - 20; /* FF */ }
 		if (jQuery.browser.msie){ var dtTop = 0; var dtOffset = 0; /* IE */ }
-		if (jQuery.browser.opera){ var dtTop = (dlHeight-dtWidth)/2; var dtOffset = -dtTop; }
+	          if (jQuery.browser.opera){ var dtTop = (dlHeight-dtWidth)/2; var dtOffset = -dtTop; }
 		
 		// -------- Getting things ready ------------------------------------------------------------------------------
 		

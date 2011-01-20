@@ -16,6 +16,13 @@
 <link rel="stylesheet" href="<? echo base_url();?>design/style.css" type="text/css" media="screen, projection" />
 <link rel="stylesheet" href="<? echo base_url();?>design/css/styles.css" type="text/css" media="screen, projection" />
 <link rel="stylesheet" href="<? echo base_url();?>design/css/main.css" type="text/css" media="screen, projection" />
+<?  
+
+echo $browser;
+
+?>
+
+
  <script type="text/javascript" src="<? echo base_url();?>design/scripts/utility.js"></script>
 <script type="text/javascript">
 

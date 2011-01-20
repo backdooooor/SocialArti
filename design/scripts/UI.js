@@ -170,7 +170,7 @@ $("#auth_title").html("Cтраница пользователя");
 $("#reg_title").html("Поиск..");
 $("#reg").html("<h2>Человекоидный поиск</h2><p ><form onsubmit='doSearch();return false'><input type=text size=65 id='search'><br/><input type=submit value='Поиск...'></form><br><div id='result'></div></p>")
 $("#first_title").html("МикроNews");
-$("#first").html("<h2>МикроNews</h2><p>здесь какие то интересные новости</p>");
+
 $("#pos_title").html("Мои друзья");
 getFriends();
  }

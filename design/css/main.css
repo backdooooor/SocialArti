@@ -10,13 +10,7 @@
 		/* UNLESS YOU KNOW WHAT YOU'RE DOING, DO NOT CHANGE THE FOLLOWING RULES */
 
 		.easy-accordion{display:block;position:relative;overflow:hidden;padding:0;margin:0}
-		.easy-accordion dt{
-/* Opera */ -o-transform:rotate(-90deg);
-/* changes with the height of the box */ 
-}
-.easy-accordion .slide-number{
-/* Opera */ -o-transform:rotate(90deg);
-}
+
                 .easy-accordion dt,.easy-accordion dd{margin:0;padding:0}
 		.easy-accordion dt,.easy-accordion dd{position:absolute}
 		.easy-accordion dt{margin-bottom:0;margin-left:0;z-index:5;/* Safari */ -webkit-transform: rotate(-90deg); /* Firefox */ -moz-transform: rotate(-90deg);-moz-transform-origin: 20px 0px;  /* Internet Explorer */ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);cursor:pointer;}

@@ -1,10 +1,11 @@
 <?php
 
 class Statics extends Controller {
-
+var $browser;
 	function Statics()
 	{
 		parent::Controller();
+                $this->load->library('user_agent');
                   $this->load->library('parser');
                 $this->load->model("User");
                 $this->load->model("Template");
@@ -16,6 +17,10 @@ class Statics extends Controller {
                   $this->load->model("Micronews");
                    $this->load->model("Group");
                    $this->load->model("Talks");
+
+                   if($this->agent->browser()=="Opera") {
+                $this->browser='<link rel="stylesheet" href="'.base_url().'design/css/opera.css" type="text/css" media="screen, projection" />';
+                 }
 	}
         function group($id){
             $mas="";
@@ -43,16 +48,19 @@ class Statics extends Controller {
                   foreach($this->Talks->get($id) as $var){
                       $data["talk"]=$data["talk"]."".$this->Template->doNameTopic($var);
                   }
-                  
+                 
                 
                         $mas=unserialize($row->info);
                        $data["name"]=$mas["name"];
                   $data["title"]=$mas["name"];
                  $data["talk"]="<h2><a href='#' onclick='doTalks(".$id.");return false;'>Создать обсуждение</a></h2>".$data["talk"];
                   //$data["micronews"]="В группе нет новостей!";
-                 
+
                  
                  $this->parser->parse('group', $data);
+                  if($this->browser!=""){
+                echo $this->browser;
+            }
               } else {
                   $data["url"]=base_url();
                   $this->parser->parse('notauth', $data);
@@ -65,6 +73,7 @@ class Statics extends Controller {
             if($tmp[1]!=null or $tmp[1]!=""){
                 $nick=$tmp[1];
                 $opt="id";
+                $id_user=$tmp[1];
             }else {
                 $opt="nick";
                 $id_user=$this->User->getID($nick);
@@ -82,9 +91,13 @@ class Statics extends Controller {
 
                       $data["micronews"]=$data["micronews"]." ".$this->Template->doMicroNews($row,$row->text,$row->data);
                 }
-              
+              if($data["micronews"]=="") $data["micronews"]=="Новостей нет(";
+           
+               
         $this->parser->parse('profile', $data);
-
+ if($this->browser!=""){
+                echo $this->browser;
+            }
         }
        
 //        function update(){

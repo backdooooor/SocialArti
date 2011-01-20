@@ -35,7 +35,12 @@ doUpdate_profile();
 );
 </script>
  <link rel="stylesheet" href="<? echo base_url();?>design/css/main.css" type="text/css" media="screen, projection" />
-
+<?  if($browser=="Opera") {
+?>
+<link rel="stylesheet" href="<? echo base_url();?>design/css/opera.css" type="text/css" media="screen, projection" />
+<?
+}
+?>
 </head>
 <body>
 

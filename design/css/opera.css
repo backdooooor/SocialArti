@@ -1,0 +1,9 @@
+.easy-accordion dt{
+/* Opera */ -o-transform:rotate(-90deg);
+/* changes with the height of the box */
+}
+.easy-accordion .slide-number{
+/* Opera */ -o-transform:rotate(90deg);
+}
+
+
