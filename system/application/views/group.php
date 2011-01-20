@@ -1,27 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-	  <title>socialArti - Социальная сеть</title>
+	  <title>{title}</title>
 
       <!-- Meta -->
       <meta http-equiv="content-type" content="text/html; charset=utf8" />
-	
+
       <!-- Scripts -->
-      <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery-1.4.3.js"></script>
+      <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.min.js"></script>
 	  <script type="text/javascript" src="<? echo base_url();?>design/scripts/jquery.easyAccordion.js"></script>
-     
+          <script type="text/javascript" src="<? echo base_url();?>design/scripts/ajaxupload.js"></script>
+      <script type="text/javascript" src="<? echo base_url();?>design/scripts/group.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/UI.js"></script>
 <script type="text/javascript" src="<? echo base_url();?>design/scripts/interface.js"></script>
-<script type="text/javascript" src="<? echo base_url();?>design/scripts/ajaxupload.js"></script>
 <link rel="stylesheet" href="<? echo base_url();?>design/style.css" type="text/css" media="screen, projection" />
-<link rel="stylesheet" href="<? echo base_url();?>design/css/styles.css" type="text/css" media="screen, projection" />
- <script type="text/javascript" src="<? echo base_url();?>design/scripts/utility.js"></script>
 <script type="text/javascript">
 
-  
-    </script>
+
+</script>
       <style type="text/css">
-		  html{font-size:62.5%; }
+ html{font-size:62.5%; }
 		  body{font-size:1.2em;color:#294f88}
 		  .sample{margin:30px;border:1px solid #92cdec;background:#d7e7ff;padding:30px}
 		  h1{margin:0 0 20px 0;padding:0;font-size:2em;}
@@ -48,7 +46,7 @@
 
 		dd p{line-height:120%; overflow: auto;}
 
-		
+
 
 		#accordion-2{width:700px;height:500px;padding:30px;background:#fff;border:1px solid #b5c9e8}
 		#accordion-2 h2{font-size:2.5em;margin-top:10px}
@@ -63,51 +61,47 @@
 		#accordion-2 a{color:#68889b}
 		#accordion-2 dd img{float:right;margin:0 0 0 30px;position:relative;top:-20px}
 
-		
-
       </style>
 
 </head>
 <body>
 
     <div class="sample">
-        <h1>socialARti  - социальная сеть</h1>
+        <h1>socialArti  -  социальная сеть.</h1>
 
 
 
 
-        <table cellpadding="50"><tr><td>
+<table cellpadding="50"><tr><td>
         <div id="accordion-2">
             <dl>
-                <dt id="first_title">Вступление</dt>
-                <dd id="first"></dd>
-                <dt  id="pos_title">О проекте</dt>
-                <dd id="pos"></dd>
-                <dt id="auth_title" >Авторизация</dt>
-                <dd id="auth"></dd>
-                <dt id="reg_title">Регистрация</dt>
-                <dd id="reg"></dd>
+                <dt id="first_title">Новости</dt>
+                <dd id="first">{micronews}</dd>
+                <dt  id="pos_title">Обсуждения</dt>
+                <dd id="pos">{talk}</dd>
+                <dt id="auth_title" >группа {name}</dt>
+                <dd id="auth">{content}</dd>
+                <dt id="reg_title">Участники</dt>
+                <dd id="reg">{partipiants}</dd>
            </dl>
-        </div></td><td>
-       <div id="isauth" style="display:none;"
+        </div></td><td><div id="isauth" style="display:none;"
           <h2>Быстрые ссылки</h2>
            <table><tr>
-            <td><a href="#Message"  id="incmessage" onclick="getMessage();return false;"><img src="<? echo base_url();?>design/menu/incomming.png" width="50px" height="50px" title="Входящие сообщения" /></a></td>
+            <td><a href="#Message" onclick="getMessage();return false;"><img src="<? echo base_url();?>design/menu/incomming.png" width="50px" height="50px" title="Входящие сообщения" /></a></td>
             <td><a  href="#draft" onclick="doNewMessage();return false;"><img src="<? echo base_url();?>design/menu/new_message.png" width="50px" height="50px"title="Написать новое сообщение" /></a></td>
                <td><a  href="<? echo base_url();?>" ><img src="<? echo base_url();?>design/menu/edit_user.png" title="Мой профиль" width="50px" height="50px" /></a></td>
                </tr>
-                <tr>
+               <tr>
               <td><a href="#Request"  id="incfriends" onclick="getRequest();return false;"><img src="<? echo base_url();?>design/menu/friends.png" width="50px" height="50px" title="Запросы на дружбу" /></a></td>
-              <td><a href="#exit"  id="incfriends" onclick="logout('1');return false;"><img src="<? echo base_url();?>design/menu/exit.png" width="50px" height="50px" title="Выход" /></a></td><td></td></tr>
+             <td><a href="#exit"  id="incfriends" onclick="logout('1');return false;"><img src="<? echo base_url();?>design/menu/exit.png" width="50px" height="50px" title="Выход" /></a></td><td></td></tr>
            </table>
-          
+
             </div>
-            
-                
                                                     </td></tr>
 </table>
+
    		<p><a href="http://readyou.ru">Артемий Татаринов &copy; 2011</a>&nbsp;&nbsp; Powered by  <a href="http://github.com/backdoor/SocialArti">socialArti ver 0,2</a></p>
-                 <div id="window">
+                                 <div id="window">
 
 <div id="windowTop">
 

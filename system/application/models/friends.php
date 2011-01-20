@@ -33,10 +33,10 @@ function getFriends($id_user){
 $this->db->from('friends');
 $this->db->join('users', 'users.id = friends.id_to or  users.id=friends.id_from');
 //$this->db->join('users usr', 'usr.id = friends.id_from');
-$this->db->where('accept', 1);
+
 $this->db->where('id_to', $id_user);
 $this->db->or_where('id_from', $id_user);
-
+$this->db->where('friends.accept', 1);
 $query = $this->db->get();
 return $query->result();
 }
@@ -47,7 +47,7 @@ $this->db->from('friends');
 $this->db->join('users', 'users.id = friends.id_from ');
 //$this->db->join('users usr', 'usr.id = friends.id_from');
 $this->db->where('id_to', $id_user);
-$this->db->where('accept', 0);
+$this->db->where('friends.accept', 0);
 $query = $this->db->get();
 return $query->result();
 }

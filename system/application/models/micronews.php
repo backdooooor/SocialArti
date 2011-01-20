@@ -12,9 +12,37 @@ $data = array(
                'id_user' => $id_user ,
                'text' => $text
             );
-echo "добавлено!";
+
 $this->db->insert('micronews', $data);
 return true;
+   }
+   function addGroupNews($id_group,$text){
+  if($id_group==null or !(int)$id_group or $id_group=="") return false;
+  $id_group="gr".$id_group;
+        if($text==null or $text=="") return false;
+$data = array(
+               'id_user' => $id_group ,
+               'text' => $text
+            );
+
+$this->db->insert('micronews', $data);
+return true;
+   }
+   function getGroup($id_group){
+       if($id_group==null or !(int)$id_group or $id_group=="") return false;
+       $idd_group=$id_group;
+       $id_group="gr".$id_group;
+      
+       $this->db->select('micronews.text,group.info,micronews.data,group.id_group,micronews.id_mnews');
+$this->db->from('micronews');
+$this->db->join('group', 'group.id_group = substring(micronews.id_user,3, 1)','right outer');
+$this->db->where('micronews.id_user', $id_group);
+
+$this->db->order_by("micronews.data", "desc");
+$query = $this->db->get();
+
+
+return $query->result();
    }
    function  getMNews($id_user){
     if($id_user==null or !(int)$id_user or $id_user=="") return false;

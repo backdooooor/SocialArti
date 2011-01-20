@@ -58,6 +58,26 @@ $query = $this->db->get('users');
 return $query->result();
        
    }
+   function getMUsers($mas){
+       if($mas=="" or $mas==null) return false;
+       $mas_us=explode(",",$mas);
+       $i=0;
+       $col=sizeof($mas_us);
+       
+      // echo $mas_us[1];
+       while($i!=$col){
+   if((int)$mas_us[$i]) {
+  if($i==0) {
+   $this->db->where("id",$mas_us[$i]);
+  } else {
+  $this->db->or_where("id",$mas_us[$i]);
+  }
+   }
+$i++;
+   }
+   $query = $this->db->get('users');
+   return $query->result();
+   }
    function updateProfile($id_user,$profile){
        if($id_user==null or $id_user=="" or !(int)$id_user) return false;
        if($profile==null or  $profile=="") return false;

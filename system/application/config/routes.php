@@ -42,6 +42,9 @@
 
 $route['default_controller'] = "welcome";
 $route['scaffolding_trigger'] = "";
+$route['group([0-9]+)']="statics/group/$1";
+$route['talk([0-9]+)']="statics/group/$1";
+$route['public([0-9]+)']="statics/group/$1";
 $route['([a-z,A-Z,0-9]+)']="statics/profile/$1";
 
 /* End of file routes.php */

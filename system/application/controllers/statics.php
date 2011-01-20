@@ -5,6 +5,7 @@ class Statics extends Controller {
 	function Statics()
 	{
 		parent::Controller();
+                  $this->load->library('parser');
                 $this->load->model("User");
                 $this->load->model("Template");
                 $this->load->library('session');
@@ -13,7 +14,47 @@ class Statics extends Controller {
                 $this->load->model("Search");
                 $this->load->model("Friends");
                   $this->load->model("Micronews");
+                   $this->load->model("Group");
+                   $this->load->model("Talks");
 	}
+        function group($id){
+            $mas="";
+              if($this->User->checkAuth()){
+                   $id_user=(int)$this->session->userdata('id');
+                  if($this->Group->isCreated($id,$id_user)) {
+                       foreach($this->Group->get($id) as $row){
+
+                         $data["content"]=$this->Template->doEditGroup($row);
+                         $data["partipiants"]=$this->Template->doPartipiants($row);
+                      }
+                  }else {
+                      foreach($this->Group->get($id) as $row){
+                          
+                         $data["content"]=$this->Template->doGroup($row);
+                         $data["partipiants"]=$this->Template->doPartipiants($row);
+                       
+                      }
+                  }
+                  foreach($this->Micronews->getGroup($id) as $list){
+                   
+                      $data["micronews"]=$data["micronews"]."".$this->Template->doGroupNews($list,$list->text,$list->data);
+
+                  }
+                  foreach($this->Talks->get($id) as $var){
+                      $data["talk"]=$data["talk"]."".$this->Template->doNameTopic($var);
+                  }
+                  
+                
+                        $mas=unserialize($row->info);
+                       $data["name"]=$mas["name"];
+                  $data["title"]=$mas["name"];
+                 $data["talk"]="<h2><a href='#' onclick='doTalks(".$id.");return false;'>Создать обсуждение</a></h2>".$data["talk"];
+                  //$data["micronews"]="В группе нет новостей!";
+                 
+                 
+                 $this->parser->parse('group', $data);
+              }
+        }
         function profile($nick){
             $opt="";
             $tmp=explode("id",$nick);
@@ -25,7 +66,7 @@ class Statics extends Controller {
                 $opt="nick";
                 $id_user=$this->User->getID($nick);
             }
-            $this->load->library('parser');
+          
         
         foreach($this->User->getProfile($nick,$opt) as $row){
           $profile=unserialize($row->profile);
@@ -110,5 +151,51 @@ class Statics extends Controller {
 
                 }
           
+        }
+          function load_avatar($id_group){
+            //TODO:сделать проверку на тип файла!
+if($id_group==null or  $id_group=="" or !(int)$id_group) {
+    echo "0";
+    return false;
+}
+
+                  if($this->User->checkAuth()){
+                    $id_user=(int)$this->session->userdata('id');
+                    if(!$this->Group->isCreated($id_group,$id_user)) return false;
+                         $blacklist = array(".php", ".phtml", ".php3", ".php4");
+ foreach ($blacklist as $item) {
+  if(preg_match("/$item\$/i", $_FILES['myfile']['name'])) {
+   echo "0";
+  return "";
+   }
+  }
+
+  $uploaddir = 'photo/club/';
+  $uploadfile = $uploaddir."".$id_group.".jpg";;
+
+  if (move_uploaded_file($_FILES['myfile']['tmp_name'], $uploadfile)) {
+
+   $url=base_url()."photo/club/".$id_group.".jpg";
+   echo $url;
+  } else {
+   echo "0";
+   return "";
+  }
+
+                    //serialize
+                    foreach($this->Group->get($id_group) as $row){
+                      $info=unserialize($row->info);
+                     }
+                   
+                    $info["photo"]=$id_group.".jpg";
+
+                    $info=serialize($info);
+                   $this->Group->edit($id_group,$info);
+                    $this->Micronews->addGroupNews($id_group,"Обновлена аватарка..");
+
+
+
+                }
+
         }
 }

@@ -1,5 +1,5 @@
 
-var base_url="http://socialarti.me/";
+var base_url="http://arti.nx0.ru/";
 var auth=false;
 function begin(){
   	$.post(
@@ -12,6 +12,7 @@ if(data=="1"){
      auth=true;
      
     setTimeout(checkNewMessage, 1000);
+    setTimeout(getRequest, 1001);
      $("#isauth").show();
 doUpdate();
 
@@ -67,7 +68,9 @@ if(data=="1"){
 $("#auth").html("Вы успешно авторизовались!!");
 $("#isauth").show();
 doUpdate();
+if(auth==true) {
                 myMicronews();
+}
 }else {
     auth=false;
   $("#auth_error").html("Некорректные данные!!!");
@@ -120,7 +123,8 @@ doUpdate();
  function(data){
 
 if(data=="1"){
-$("#reg_error").html("Вы успешно зарегистрировались!!");
+  jQuery("#auth_title").activateSlide();
+//$("#reg_error").html("Вы успешно зарегистрировались!!");
 
 }else {
   $("#reg_error").html("Некорректные данные!!!");
@@ -137,14 +141,16 @@ $("#reg_error").html("Вы успешно зарегистрировались!!
    
      },
  function(data){
-    
+   if(auth==true){
 $("#auth_title").html("Моя страница");
 $("#auth").html(data);
 $("#reg_title").html("Поиск..");
 $("#reg").html("<h2>Человекоидный поиск</h2><p ><form onsubmit='doSearch();return false'><input type=text size=65 id='search'><br/><input type=submit value='Поиск...'></form><br><div id='result'></div></p>")
+
 $("#first_title").html("МикроNews");
 $("#pos_title").html("Мои друзья");
 getFriends();
+   }
  }
 );
 
@@ -209,6 +215,21 @@ $("#pos").html("<h2>Мои друзья</h2><p>"+data+"</p>")
  function(data){
 
 $("#first").html("<h2>МикроNews</h2><p>"+data+"</p>")
+
+ }
+);
+    }
+      function doGroupNews(id_group){
+
+
+                   	$.post(
+  '/./index.php/ajax/doGroupNews/' + id_group,
+  {
+
+     },
+ function(data){
+
+$("#first").html("<h2>Новости</h2><p>"+data+"</p>")
 
  }
 );
@@ -496,9 +517,11 @@ function getRequest(){
   
      },
  function(data){
+  if(data!="") {
  $("#windowTopContent").html("Запросы на добавление в друзья ");
  $("#windowContent").html(data);
  $("#window").show();
+  }
  }
 );
 }
@@ -533,7 +556,8 @@ skype:edit_skype
 
  }
 );
-alert('Контактные данные успешно обновлены!');
+
+doNotify("Контактные данные успешно обновлены!");
 }
  function doLoadPhoto(){
 
@@ -560,11 +584,13 @@ var button = $('#load_photo');
 							// СЃРЅРѕРІР° РІРєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ
                                                         
                                                         if(response=="0"){
-                                                            alert('При загрузке файла произошла ошибка,попробуйте еще раз')
+                                                            
+                                                            doNotify('При загрузке файла произошла ошибка,попробуйте еще раз');
                                                         } else {
 							this.enable();
                                                         $("#user_photo").attr("src", response);
-                                                         alert('успешно загружено!');
+                                                         
+                                                         doNotify("успешно загружено!");
                                                          myMicronews();
                                                         }
 							// РїРѕРєР°Р·С‹РІР°РµРј С‡С‚Рѕ С„Р°Р№Р» Р·Р°РіСЂСѓР¶РµРЅ
@@ -573,6 +599,48 @@ var button = $('#load_photo');
 						}
 					});
                    
+
+ }
+  function doLoadAvatar(id_group){
+
+
+var button = $('#load_avatar');
+  $.ajax_upload(button, {
+						action : 'statics/load_avatar/' + id_group ,
+						name : 'myfile',
+						onSubmit : function(file, ext) {
+							// РїРѕРєР°Р·С‹РІР°РµРј РєР°СЂС‚РёРЅРєСѓ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+
+
+							/*
+							 * Р’С‹РєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ РЅР° РІСЂРµРјСЏ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+							 */
+							this.disable();
+
+						},
+						onComplete : function(file, response) {
+							// СѓР±РёСЂР°РµРј РєР°СЂС‚РёРЅРєСѓ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+							//$("img#load").attr("src", "loadstop.gif");
+							//$("#uploadButton font").text('Р—Р°РіСЂСѓР·РёС‚СЊ');
+
+							// СЃРЅРѕРІР° РІРєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ
+                                                          
+                                                        if(response=="0"){
+
+                                                            doNotify('При загрузке файла произошла ошибка,попробуйте еще раз');
+                                                        } else {
+							this.enable();
+                                                        $("#group_avatar").attr("src", response);
+
+                                                         doNotify("успешно загружено!");
+                                                         myMicronews();
+                                                        }
+							// РїРѕРєР°Р·С‹РІР°РµРј С‡С‚Рѕ С„Р°Р№Р» Р·Р°РіСЂСѓР¶РµРЅ
+							//$("<li>" + file + "</li>").appendTo("#files");
+
+						}
+					});
+
 
  }
  function doComment(id_mnews){
@@ -598,10 +666,249 @@ $("#id_"+id_mnews).html(data);
   text:text_comment
      },
  function(data){
-
+doNotify("Ваш комментарий успешно добавлен!");
 $("#id_"+id_mnews).html(data);
 
  }
 );
 
  }
+ function doSaveNS(){
+  var edit_name=$("#name").val();
+  var edit_surname=$("#surname").val();
+       $.post(
+  '/./index.php/ajax/doEditNS/',
+  {
+  name:edit_name,
+  surname:edit_surname
+     },
+ function(data){
+doNotify("Ваши данные успешно сохранены!");
+
+ }
+);
+
+ }
+ function doNotify(text){
+   $("#windowTopContent").html("Уведомление");
+ $("#windowContent").html(text);
+ $("#window").show();
+ }
+ function doCreateGroup(){
+     if(auth){
+ var text="<h2>Создание группы</h2><form onSubmit='CreateGroup();return false;'>Название группы<br>\n\
+<input id='gr_name' type=text  /><br> \n\
+Описание Группы<br>\n\
+<textarea  id='gr_description'rows=3 cols=35></textarea><br>\n\
+<input type=submit value='Создать'><div id='gr_error'></div></form>";
+            $("#windowTopContent").html("Создание группы");
+ $("#windowContent").html(text);
+ $("#window").show();
+     }
+ }
+ function CreateGroup(){
+     var  group_name=$("#gr_name").val();
+
+     var  group_description=$("#gr_description").val();
+     if(group_name=="" || group_name==null)  {
+         $("#gr_error").html("Вы не заполнили название группы!");
+         return false;
+     }
+     if(group_description==null || group_description=="") {
+         $("#gr_error").html("Вы не заполнили описание группы!");
+         return false;
+     }
+       $("#gr_error").html("");
+         $.post(
+  '/./index.php/ajax/addGroup/',
+  {
+  name:group_name,
+  text:group_description
+     },
+ function(data){
+if(data=="1")
+    {
+        $("#window").hide();
+        myMicronews();
+        doNotify("Группа успешно создана!");
+
+    }else {
+       $("#gr_error").html("Произошла ошибка");
+    }
+
+ }
+);
+ }
+ function doTalk(){
+ jQuery("#pos_title").activateSlide();
+ }
+ function doPartipians(){
+     jQuery("#reg_title").activateSlide();
+ }
+ function doNews(){
+     jQuery("#first_title").activateSlide();
+ }
+  function doContent(){
+      jQuery("#auth_title").activateSlide();
+ }
+     function  doGo(){
+      var  hash=window.location.hash;
+      switch(hash){
+       case "#users":
+           doPartipians();
+           break;
+       case "#talks":
+           doTalk();
+           break;
+       case "#news":
+           doNews();
+           break;
+       case "#main":
+           doContent();
+           break;
+      }
+    }
+ function setStatusGroup(id_group){
+
+  
+
+     var mnews=$("#status_group").val();
+                     	$.post(
+  '/./index.php/ajax/addGroupNews/',
+  {
+ text:mnews,
+ group:id_group
+     },
+ function(data){
+if(data=="1") {
+    doNotify("Новость успешно опубликована!");
+    doGroupNews(id_group);
+    $("#status_group").text("");
+}else {
+    doNotify("Произошла ошибка...");
+}
+
+ }
+);
+ }
+
+ function doEditGroup(id_group){
+var group_name=$("#group_name").val();
+var group_desc=$("#group_description").val();
+if(group_name=="") {
+    doNotify("Название групы не может быть пустым");
+    return false;
+}
+  	$.post(
+  '/./index.php/ajax/doSaveGroup/' + id_group,
+  {
+description:group_desc,
+name:group_name
+
+     },
+ function(data){
+
+ }
+);
+
+doNotify("Контактные данные успешно обновлены!");
+}
+function doJoinGroup(id_group){
+ 	$.post(
+  '/./index.php/ajax/doJoinGroup/' + id_group,
+  {
+
+
+     },
+ function(data){
+if(data="1"){
+    $("#group_user").html("Выйти из группы");
+    $("#group_user").attr("onclick", "doExitGroup("+id_group+");return false;");
+    doNotify("Вы успешно вступили в группу");
+}
+ }
+);
+}
+function doExitGroup(id_group){
+ 	$.post(
+  '/./index.php/ajax/doExitGroup/' + id_group,
+  {
+
+
+     },
+ function(data){
+
+if(data=="1"){
+    $("#group_user").html("Вступить в группу");
+    $("#group_user").attr("onclick", "doJoinGroup("+id_group+");return false;");
+    doNotify("Вы успешно покинули группу");
+}
+ }
+);
+}
+function getTalks(id_talks){
+window.location.hash="#talks";
+ 	$.post(
+  '/./index.php/ajax/getTalks/' + id_talks,
+  {
+
+
+     },
+ function(data){
+
+$("#pos").html(data);
+ }
+);
+}
+function addTalk(id_group,id_talk,opt){
+ if(id_talk=="" || id_talk==null) id_talk=0;
+ if(id_group=="" || id_group==null) return false;
+ var forum_text=$("#forum_text").val();
+ if(forum_text=="" || forum_text==null) return false;
+if(opt==0)  {
+ var titles="";}
+else {
+    
+    var titles=$("#forum_title").val();
+    if(titles=="" || titles==null) return false;
+}
+ 	$.post(
+  '/./index.php/ajax/addTalk/' + id_group + "/" + id_talk,
+  {
+   text:forum_text,
+   title:titles
+
+     },
+ function(data){
+       //alert(data);
+     if(opt!=0){
+         $("#forum_text").text("");
+       
+            getTalks(data);
+     }else{
+            $("#forum_text").text("");
+            getTalks(id_talk);
+     }
+            doNotify("Сообщение успешно опубликовано!");
+            
+ }
+);
+}
+function doTalks(id_group){
+ window.location.hash="#talks";
+ $("#pos").html("<form onSubmit='addTalk("+id_group+",0,1);return false;'>Название обсуждения<br><input type=text id='forum_title'><br>Текст сообщения<br><textarea id='forum_text' rows=3 cols=35></textarea><br><input type=submit value='Опубликовать'></form>");
+}
+function listTalk(id_group){
+    window.location.hash="#talks";
+    	$.post(
+  '/./index.php/ajax/listTalk/' + id_group,
+  {
+
+
+     },
+ function(data){
+
+$("#pos").html(data);
+ }
+);
+}
