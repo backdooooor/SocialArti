@@ -384,7 +384,8 @@ function _remap($method){
                        $name_group=$this->Filter->doHTML($this->input->post('name'));
                       if($this->Group->isCreated($id_group,$id_user)) {
                     $info="";
-                     foreach($this->Group->get($id) as $row){
+                     foreach($this->Group->get($id_group) as $row){
+                       
                       $info=unserialize($row->info);
                      }
                      $info["name"]=$name_group;
