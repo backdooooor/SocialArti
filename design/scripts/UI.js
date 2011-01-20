@@ -1,7 +1,9 @@
 
 var base_url="http://arti.nx0.ru/";
 var auth=false;
+
 function begin(){
+   
   	$.post(
   '/./index.php/ajax/checkAuth/',
   {
@@ -23,15 +25,14 @@ doUpdate();
 
  }
 );
- $('#accordion-2').easyAccordion({
-			autoStart: false
-	});
+ 
      
     
 }
 function doNotAuth(){
 
 $("#auth_title").html("Авторизация");
+
 $("#auth").html('<h2>Авторизация</h2><p> <div id="auth_error"></div><br/><form  method="POST" onSubmit="doAuth();return false;">email <br/><input type="text" name="email" id="email" /><br/>Пароль <br/><input type="password" name="pass" id="pass" /><br/><input type="submit" value="Войти"/></form></p>');
 $("#reg_title").html("Регистрация");
 $("#reg").html('<h2>Регистрация</h2><p><div id="reg_error"></div><br/><form  method="POST" onSubmit="doRegister();return false;">email <br/><input type="text" name="email" id="reg_email" /><br/>Фамилия<br/><input type="text" name="surname" id="reg_surname" /><br/>Имя <br/><input type="text" name="name" id="reg_name" /><br/>Отчество <br/><input type="text" name="otch" id="reg_otch" /><br/>Откуда ты<br/><input type="text" name="location" id="reg_location" /><br/>Пароль <br/><input type="password" name="pass1" id="reg_pass1" /><br/>Повтор Пароля <br/><input type="password" name="pass2" id="reg_pass2" /><br/><input type="submit" value="Регистрация"/></form> </p>');

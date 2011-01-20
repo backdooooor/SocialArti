@@ -53,6 +53,9 @@ class Statics extends Controller {
                  
                  
                  $this->parser->parse('group', $data);
+              } else {
+                  $data["url"]=base_url();
+                  $this->parser->parse('notauth', $data);
               }
         }
         function profile($nick){
