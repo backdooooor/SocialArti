@@ -23,6 +23,7 @@ $code="<h2><form onSubmit='doSaveNS();return false;'><input type=text  id='surna
 return $code;
 
 }
+
 //вывод информации о группе!
 function doGroup($row){
 //тип группы 0- открытый ,1 закрытый
@@ -147,11 +148,31 @@ $action_friends='doAddFriends('.$row->id.',"'.$title.'","'.$photo_url.'");return
 if(!$CI->Friends->isFriends($this->session->userdata('id'),$row->id)  and $this->session->userdata('id')!=$row->id ){
 $send_message=$send_message."<br><a href='#' onclick='".$action_friends."'>Добавить в друзья</a>";
 }
+$group_mas=explode(";",$masive["groups"]);
+
+$i=0;
+$group="";
+while($group_mas[$i]!="" or $group_mas[$i]!=null ) {
+$temp=explode("|",$group_mas[$i]);
+$group=$group.'<a href="'.base_url().'/group'.$temp[1].'">'.$temp[0].'</a><br>';
+$i++;
+}
 $this->load->helper("url");
-$code="<h2>".$masive['surname']." ".$masive['name']."</h2><p><textarea readonly name='status' id='status'  rows=3 cols=50 >".$status."</textarea><br/><table><tr><td><img src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><br>".$send_message."</td><td>Откуда:".$location."<br>Контакты:<br>icq:".$masive['icq']."<br>jabber:".$masive['jabber']."<br>skype:".$masive['skype']."<br></td></tr></table></p>";
+$code="<h2>".$masive['surname']." ".$masive['name']."</h2><p><textarea readonly name='status' id='status'  rows=3 cols=50 >".$status."</textarea><br/><table><tr><td><img src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><br>".$send_message."</td><td>Откуда:".$location."<br>Контакты:<br>icq:".$masive['icq']."<br>jabber:".$masive['jabber']."<br>skype:".$masive['skype']."<br>Группы<br>".$group."</td></tr></table></p>";
 return $code;
 }
 function doMicroNews($row,$text,$data){
+     $CI =& get_instance();
+     $CI->load->model("Search");
+
+     $links_mas=$CI->Search->doSearchLink($text);
+     //искомая ссылка $links_mas[0];
+     
+     $CI->load->model("Content");
+     $media_content=$CI->Content->doContent($links_mas[0]);
+     if($media_content!="")  $text = str_replace($links_mas[0], "", $text);
+     $text=$text."<br>".$media_content;
+ 
     $masive=unserialize($row->profile);
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
 
@@ -164,7 +185,16 @@ return $code;
 }
 function doGroupNews($row,$text,$data){
     $masive=unserialize($row->info);
+ $CI =& get_instance();
+     $CI->load->model("Search");
 
+     $links_mas=$CI->Search->doSearchLink($text);
+     //искомая ссылка $links_mas[0];
+
+     $CI->load->model("Content");
+     $media_content=$CI->Content->doContent($links_mas[0]);
+     if($media_content!="")  $text = str_replace($links_mas[0], "", $text);
+     $text=$text."<br>".$media_content;
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="noavatar.jpg";
 
 

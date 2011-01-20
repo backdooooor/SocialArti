@@ -29,6 +29,26 @@ class Search extends Model {
         
 
     }
+    function doSearchLink($text, $part="")
+{
+    $part = ($part) ? "?:(?!$part).)*(" : ".*?";
+    $re = '/(([^\/]+)[\/][^\s">]+)[\s">]/is';
+    preg_match_all($re, $text, $x);
+ 
+    $i=0;
+    $s="";
+    foreach ($x[1] as $k => $v) {
+        if ($v) {
+            $s[$i] = $v;
+        
+        $i++;
+        }
+        
+    }
+    
+    return $s;
+}
+
 
     
 }
