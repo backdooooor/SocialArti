@@ -70,9 +70,9 @@ minWidth: 200,
 
 minHeight: 60,
 
-maxWidth: 700,
+maxWidth: 1000,
 
-maxHeight: 400,
+maxHeight: 1000,
 
 dragHandle: '#windowTop',
 

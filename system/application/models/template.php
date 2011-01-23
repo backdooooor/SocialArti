@@ -7,7 +7,7 @@ $status=$masive["status"];
 if($status==null or $status==""){
     $status="Ваш статус";
 }
-
+$id_user=(int)$this->session->userdata('id');
 if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
 $this->load->helper("url");
 $group_mas=explode(";",$masive["groups"]);
@@ -19,7 +19,7 @@ $temp=explode("|",$group_mas[$i]);
 $group=$group.'<a href="'.base_url().'/group'.$temp[1].'">'.$temp[0].'</a><br>';
 $i++;
 }
-$code="<h2><form onSubmit='doSaveNS();return false;'><input type=text  id='surname' value='".$masive['surname']."' />&nbsp; <input type=text id='name' value='".$masive['name']."' /><input type=submit value='Сохранить'><br></form></h2><p><form onSubmit='setStatus();return false;' method='POST'><textarea name='status' id='status'  rows=3 cols=35 >".$status."</textarea><br><input type=submit value='Обновить'></form><br/><table><tr><td><img  id='user_photo' src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><a  id='load_photo' href='#' onclick='doLoadPhoto();return false'>Загрузка фотографии</a><br>Действия:<br><a  href='#' onclick='doCreateGroup();return false;'>Создать группу</a><br><a href=''>Создать страницу</a><br><a href='#'>Создать запись</a><br>Группы<br>".$group."<br>Подписки:<br><a href='#'>Read.You</a></td><td>Откуда:".$location."<br>Контакты:<form onSubmit='doSaveContact();return false;'><br>icq:<input type=text  id='edit_icq' value='".$masive['icq']."'><br>jabber:<input type=text id='edit_jabber' value='".$masive['jabber']."'><br>skype:<input type=text id='edit_skype' value='".$masive['skype']."'><br><input type=submit value='Сохранить'></form><br></td></tr></table></p>";
+$code="<h2><form onSubmit='doSaveNS();return false;'><input type=text  id='surname' value='".$masive['surname']."' />&nbsp; <input type=text id='name' value='".$masive['name']."' /><input type=submit value='Сохранить'><br></form></h2><p><form onSubmit='setStatus();return false;' method='POST'><textarea name='status' id='status'  rows=3 cols=35 >".$status."</textarea><br><input type=submit value='Обновить'></form><br/><table><tr><td><img  id='user_photo' src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><a  id='load_photo' href='#' onclick='doLoadPhoto();return false'>Загрузка фотографии</a><br>Действия:<br><a  href='#' onclick='doCreateGroup();return false;'>Создать группу</a><br><a href=''>Создать страницу</a><br><a href='#' onclick='doNewArticle();return false;'>Создать запись</a><br>Группы<br>".$group."<br>Подписки:<br><a href='#'>Read.You</a><br><a href='#' onclick='getBlog(".$id_user.");return false;'><h3>Блог пользователя</h3></a></td><td>Откуда:".$location."<br>Контакты:<form onSubmit='doSaveContact();return false;'><br>icq:<input type=text  id='edit_icq' value='".$masive['icq']."'><br>jabber:<input type=text id='edit_jabber' value='".$masive['jabber']."'><br>skype:<input type=text id='edit_skype' value='".$masive['skype']."'><br><input type=submit value='Сохранить'></form><br></td></tr></table></p>";
 return $code;
 
 }
@@ -158,7 +158,7 @@ $group=$group.'<a href="'.base_url().'/group'.$temp[1].'">'.$temp[0].'</a><br>';
 $i++;
 }
 $this->load->helper("url");
-$code="<h2>".$masive['surname']." ".$masive['name']."</h2><p><textarea readonly name='status' id='status'  rows=3 cols=50 >".$status."</textarea><br/><table><tr><td><img src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><br>".$send_message."</td><td>Откуда:".$location."<br>Контакты:<br>icq:".$masive['icq']."<br>jabber:".$masive['jabber']."<br>skype:".$masive['skype']."<br>Группы<br>".$group."</td></tr></table></p>";
+$code="<h2>".$masive['surname']." ".$masive['name']."</h2><p><textarea readonly name='status' id='status'  rows=3 cols=50 >".$status."</textarea><br/><table><tr><td><img src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><br>".$send_message."</td><td>Откуда:".$location."<br>Контакты:<br>icq:".$masive['icq']."<br>jabber:".$masive['jabber']."<br>skype:".$masive['skype']."<br>Группы<br>".$group."<br><a href='#' onclick='getBlog(".$row->id.");return false;'><h3>Блог пользователя</h3></a></td></tr></table></p>";
 return $code;
 }
 function doMicroNews($row,$text,$data){
@@ -259,5 +259,57 @@ $code="<table  style='".$style."' cellspacing=20
 ><tr><td><img  width=25px height=25px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='".base_url()."id".$row->id."'>".$masive['surname']." ".$masive['name']."</a><br><hr>Создатель групы<br><br></td></tr></table><br>";
 return $code;
 }
+function doOnline_User($row){
+ $user_data=unserialize($row->user_data);
+ $id_user=$user_data['id'];
+ $profile=unserialize($user_data["profile"]);
+if($id_user==null or $id_user=="" or !(int)$id_user) return false;
+if($profile['surname']=="" or $profile['surname']==null) return false;
+if($profile['name']=="" or $profile['name']==null) return false;
+ if(!isset($profile["photo"]) or $profile["photo"]==null or $profile["photo"]=="" ) $profile["photo"]="nophoto.jpg";
+ $code="<table  style='".$style."' cellspacing=20
+><tr><td><img  width=25px height=25px src='".base_url()."photo/".$profile['photo']."' align='left' ></td><td><a  href='".base_url()."id".$id_user."' onclick='fastURL(this);return false;';>".$profile['surname']." ".$profile['name']."</a><br><hr>".$profile['status']."<br><br></td></tr></table><hr><br/>";
+return $code;
+}
+function doFast_Message($row){
+  $profile=unserialize($row->profile);
+                         $title="<a  href='".base_url()."id".$row->id."' onclick='fastURL(this);return false;'>".$profile["surname"]." ".$profile["name"]."</a>";
+$code=$title." :<div id='text'>".$row->text." <div id='data'>".$row->data."</div></div><br>";
+return $code;
+}
+function doFlash($row){
+  $masive=unserialize($row->profile);
+ if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
+ $nick=="id".$row->id;
 
+$code="<table  style='".$style."' cellspacing=20
+><tr><td><img  width=25px height=25px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='#' onclick='showFlash(".$row->id_flash.")'>".$row->title."</a><br><hr>".$row->description."<br><br></td></tr></table><br><div id='flash_".$row->id_flash."' style='display:none;'><object data='".base_url()."flash/".$row->id_flash.".swf' type='application/x-shockwave-flash' height='400px' width='400px'>
+<param value='true' name='menu'/>
+<param value='high' name='quality'/>
+<param value='transparent' name='wmode'/>
+<div>Тест для поисковиков и браузеров не поддерживающих плагины</div>
+<embed type='application/x-shockwave-flash' src='".base_url()."flash/".$row->id_flash.".swf' width='400px' height='400px' />
+</object></div><br/>";
+return $code;
+}
+function doListArticle($row){
+ $title=$row->title;
+ $id_article=$row->id_article;
+  $masive=unserialize($row->profile);
+  $name=$masive["surname"]." ".$masive["name"];
+  $id_user=$row->id;
+  $code="<center><a href='#' onclick='doArticle(".$id_article.");return false;'><h2>".$title."</h2></a><br>Написал <a href='".base_url()."/id".$id_user."'>".$name."</a></center><br>";
+  return $code;
+
+}
+function doArticle($row){
+ $title=$row->title;
+ $id_article=$row->id_article;
+  $masive=unserialize($row->profile);
+  $name=$masive["surname"]." ".$masive["name"];
+  $id_user=$row->id;
+  $text=$row->text;
+  $code="<h2>".$title."</h2><p>".$text."</p><br>Написал <a href='".base_url()."id".$id_user."'>".$name."</a>";
+  return $code;
+}
 }

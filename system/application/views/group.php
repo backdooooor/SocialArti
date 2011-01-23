@@ -25,8 +25,8 @@
 <body>
 
     <div class="sample">
-                <div id="menu_arti"><a href="<? echo base_url(); ?>group1">Новости проекта</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="fastWindow();">Быстрые сообщения</a></div>
-        <h1>socialArti  -  социальная сеть.</h1>
+                <div id="menu_arti"><a href="<? echo base_url(); ?>group1">Новости проекта</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="fastWindow();">Быстрые сообщения</a>&nbsp;&nbsp;<a href="#" onclick="doFlash();return false;">Приложения</a></div>
+        <h1><a href="<? echo base_url(); ?>">socialARti  - социальная сеть</a></h1>
 
 
 
@@ -43,7 +43,7 @@
                 <dt id="reg_title">Участники</dt>
                 <dd id="reg">{partipiants}</dd>
            </dl>
-        </div></td><td><div id="isauth" style="display:none;"
+        </div></td><td><div id="isauth" style=""
           <h2>Быстрые ссылки</h2>
            <table><tr>
             <td><a href="#Message" onclick="getMessage();return false;"><img src="<? echo base_url();?>design/menu/incomming.png" width="50px" height="50px" title="Входящие сообщения" /></a></td>
@@ -52,7 +52,13 @@
                </tr>
                <tr>
               <td><a href="#Request"  id="incfriends" onclick="getRequest();return false;"><img src="<? echo base_url();?>design/menu/friends.png" width="50px" height="50px" title="Запросы на дружбу" /></a></td>
-             <td><a href="#exit"  id="incfriends" onclick="logout('1');return false;"><img src="<? echo base_url();?>design/menu/exit.png" width="50px" height="50px" title="Выход" /></a></td><td></td></tr>
+             <td><a href="#exit"   onclick="logout('1');return false;"><img src="<? echo base_url();?>design/menu/exit.png" width="50px" height="50px" title="Выход" /></a></td>
+             <td><a href="#new"   onclick="doNewArticle();return false;"><img src="<? echo base_url();?>design/menu/blog.png" width="50px" height="50px" title="Создать запись" /></a></td></tr>
+               <tr>
+                   <td><a href="#group"   onclick="doCreateGroup();return false;"><img src="<? echo base_url();?>design/menu/group.png" width="50px" height="50px" title="Создать группу" /></a></td>
+                   <td><a href="#group"   onclick="doCreateGroup();return false;"><img src="<? echo base_url();?>design/menu/bookmark.png" width="50px" height="50px" title="Создать страницу" /></a></td>
+                   <td></td>
+               </tr>
            </table>
 
             </div>

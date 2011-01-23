@@ -23,7 +23,6 @@ class Talks extends Model  {
     function add($id_user,$id_main=0,$id_group=0,$text,$title=""){
      // echo $id_user.",".$id_main.",".$id_group.",".$text.",".$title;
         if($id_user=="" or $id_user==null or !(int)$id_user) return false;
-         
              if($id_group=="" or $id_group==null or !(int)$id_group) return false;
             
              $data = array(

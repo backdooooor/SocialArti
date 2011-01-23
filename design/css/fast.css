@@ -15,11 +15,28 @@ body{
 
 #user_online{
     overflow-y: scroll;
+    height: 200px;
+}
+#user_online a {
+    color:#294f88;
 }
 #message{
 overflow-y: scroll;
-
-
+height: 200px;
+width:250px;
+word-wrap: break-word;
+display:block;
+background:white;
+}
+#message a {
+    color:#294f88;
+}
+#text{
+    
+    color:black;
+}
+#data {
+    color:red;
 }
 
 		/* UNLESS YOU KNOW WHAT YOU'RE DOING, DO NOT CHANGE THE FOLLOWING RULES */

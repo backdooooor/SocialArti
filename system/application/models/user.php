@@ -91,7 +91,7 @@ $this->db->update('users', $data);
 return true;
    }
    function listOnline(){
-
+$this->db->distinct();
 $query = $this->db->get("ci_sessions");
 
 return $query->result();

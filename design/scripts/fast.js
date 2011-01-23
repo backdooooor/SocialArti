@@ -1,10 +1,29 @@
-
+ setTimeout(doOnline, 501);
+setTimeout(getFastMessage, 500);
 $(document).ready(function () {
+
+//$('a').click(function(){
+//    alert(this.href);
+//  if(this.href!=null){
+//      window.opener.location.href=this.href;
+//  }
+//  return false;
+//});
+
 doOnline();
 getFastMessage();
-setTimeout(doOnline, 1000);
-setTimeout(getFastMessage, 1002);
+fast_begin();
 });
+function ctrlEnter(event)
+    {
+    if((event.ctrlKey) && ((event.keyCode == 0xA)||(event.keyCode == 0xD)))
+        {
+        doSendMessage();
+        }
+    }
+function fast_begin(){
+   
+}
 function doOnline(){
  	$.post(
   '/./index.php/ajax/doOnlineUsers/',
@@ -14,10 +33,12 @@ function doOnline(){
      },
  function(data){
 $("#user_online").html(data);
+ setTimeout(doOnline, 503);
  }
 );
 }
 function getFastMessage(){
+   
  	$.post(
   '/./index.php/ajax/doListFastMessage/',
   {
@@ -26,6 +47,7 @@ function getFastMessage(){
      },
  function(data){
 $("#message").html(data);
+setTimeout(getFastMessage, 505);
  }
 );
 }
@@ -54,4 +76,9 @@ if(data=="1"){
  }
 );
 
+}
+function fastURL(url){
+
+    window.opener.location.href=url.href;
+    
 }

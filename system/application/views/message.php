@@ -29,21 +29,23 @@
 
 
 
-    <table><tr><td width="40%" id="user_online">
-              
+    <table><tr><td width="40%" >
+                <div id="user_online"></div>
             </td>
-            <td id="message">
+            <td >
+                <div id="message"></div>
             </td>
         </tr></table><br/>
         <div id="send_message">
-            <form onSubmit="doSendMessage();return false;">
+            <form onSubmit="doSendMessage();return false;" onkeypress="ctrlEnter(event);">
             Текст сообщения<br/>
-            <textarea rows="3" cols="35" id="text_mes"></textarea>
-            <br/><input type="submit" value="Отправить"/>
+            <textarea rows="3" cols="60" id="text_mes"></textarea>
+            
+            <br/><input type="submit" value="Ctrl+&crarr;"/>
             </form>
         </div>
 
-
+        <center><a href="http://readyou.ru">Артемий Татаринов &copy;</a></center>
     </div>
 
 </body>

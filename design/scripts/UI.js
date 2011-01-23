@@ -13,8 +13,7 @@ function begin(){
 if(data=="1"){
      auth=true;
      
-    setTimeout(checkNewMessage, 1000);
-    setTimeout(getRequest, 1001);
+    
      $("#isauth").show();
 doUpdate();
 
@@ -449,7 +448,7 @@ if(data!="0"){
  $("#incmessage").html('<img src="'+base_url+'design/menu/hot.png" width="50px" height="50px" title="У вас '+ data +'  новых сообщений" />')
 }else {
 $("#incmessage").html('<img src="'+base_url+'design/menu/incomming.png" width="50px" height="50px" title="Входящие сообщения" />');
-
+ setTimeout(checkNewMessage, 1000);
 }
  }
 );
@@ -523,6 +522,8 @@ function getRequest(){
  $("#windowContent").html(data);
  $("#window").show();
   }
+ 
+    setTimeout(getRequest, 1001);
  }
 );
 }
@@ -915,6 +916,110 @@ $("#pos").html(data);
 }
 function fastWindow(){
  if(auth){
- window.open('fast','','width=700px,height=500px');
+ window.open('fast','child','width=700px,height=500px');
  }
 }
+function doFlash(){
+    if(!auth) {
+        return false;
+    }
+   	$.post(
+  '/./index.php/ajax/doListFlash/',
+  {
+  
+
+     },
+ function(data){
+       //alert(data);
+     if(data=="") data="Приложения не найдены!";
+     
+      $("#windowTopContent").html("Приложения");
+  $("#windowContent").html(data);
+    $("#window").show();
+ }
+);
+}
+function showFlash(id){
+ 
+
+var str= $("#flash_"+id).html();
+
+ $("#windowTopContent").html("Приложение");
+  $("#windowContent").html(str);
+    $("#window").css('width','400px');
+     $("#window").css('height','400px');
+  $("#windowContent").css('width','400px');
+   $("#windowContent").css('height','400px');
+    $("#window").show();
+}
+function getBlog(id_user){
+    	$.post(
+  '/./index.php/ajax/getArticle/' + id_user,
+  {
+
+
+     },
+ function(data){
+      
+     if(data=="") data="Статьи не найдены!";
+
+      $("#windowTopContent").html("Статьи");
+  $("#windowContent").html(data);
+    $("#window").show();
+ }
+);
+}
+function doArticle(id){
+     	$.post(
+  '/./index.php/ajax/doArticle/' + id,
+  {
+
+
+     },
+ function(data){
+
+     if(data=="") data="Статья не найдена!";
+
+      $("#windowTopContent").html("Статья");
+  $("#windowContent").html(data);
+    $("#window").show();
+ }
+);
+}
+function doNewArticle(){
+ if(!auth) {
+     return false;
+ }
+ var tmp='<form onSubmit="addArticle();return false;">Название<br>\n\
+<input type=text  value="" id="article_title"><br>Текст статьи(HTML OFF)<br><textarea id="article_text" rows=6 cols=35></textarea><br>\n\
+<input type=submit value="Создать"></form>';
+  $("#windowTopContent").html("Создание статьи");
+  $("#windowContent").html(tmp);
+    $("#window").show();
+}
+function addArticle(){
+   var arti_title=$("#article_title").val();
+   var arti_text=$("#article_text").val();
+   
+        	$.post(
+  '/./index.php/ajax/newArticle/',
+  {
+text:arti_text,
+title:arti_title
+
+     },
+ function(data){
+
+     if(data!="1") {data="При публикации произошла ошибка";}
+     else {
+         data="Статья успешно опубликована!";
+         myMicronews();
+     }
+      $("#windowTopContent").html("Статья");
+  $("#windowContent").html(data);
+    $("#window").show();
+ }
+);
+}
+
+

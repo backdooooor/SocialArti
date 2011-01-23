@@ -17,8 +17,10 @@ class Ajax extends Controller {
                    $this->load->model("Comments");
                     $this->load->model("Group");
                     $this->load->model("Talks");
+                    $this->load->model("Flash");
+                    $this->load->model("Article");
 	}
-function _remap($method){
+function _remap1($method){
       
         if(IS_AJAX){
             $pars = $this->uri->segment_array();
@@ -503,12 +505,16 @@ function _remap($method){
              function doOnlineUsers(){
                  if($this->User->checkAuth())
                   {
+                $masive="";
+              
                  foreach($this->User->listOnline() as $row){
-                     $user_data=unserialize($row->user_data);
-                     $id_user=$user_data['id'];
-                     $profile=unserialize($user_data["profile"]);
-                     if(!isset($profile["photo"]) or $profile["photo"]==null or $profile["photo"]=="" ) $profile["photo"]="nophoto.jpg";
-                     echo "<a href='".base_url()."id".$id_user."'>".$profile['surname']." ".$profile["name"]."</a><br>";
+                       $user_data=unserialize($row->user_data);
+                       $id_user=$user_data["id"];
+                       if($masive[$id_user]==null) {
+                  echo $this->Template->doOnline_User($row);
+                    $masive[$id_user]=$id_user;
+                  }
+               
                  }
                   }
              }
@@ -524,12 +530,52 @@ function _remap($method){
                  if($this->User->checkAuth())
                   {
                     foreach($this->Message->getFast() as $row){
-                        $profile=unserialize($row->profile);
-                         $title="<a href='".base_url()."id".$row->id."'>".$profile["surname"]." ".$profile["name"]."</a>";
-                        echo $title." :".$row->text." ".$row->data."<br>";
+                       echo $this->Template->doFast_Message($row);
                     }
                      
                  }
              }
+             function doListFlash(){
+                    if($this->User->checkAuth())
+                  {
+                    foreach($this->Flash->get() as $row){
+                       
+                       echo $this->Template->doFlash($row);
+                    }
+
+                 }
+             }
+             function getArticle($id_user){
+                 if($this->User->checkAuth()) {
+                 if($id_user=="" or $id_user==null or !(int)$id_user) return false;
+                 foreach($this->Article->get($id_user) as $row){
+                   echo   $this->Template->doListArticle($row);
+                 }
+                 }
+             }
+             function doArticle($id_article){
+                   if($this->User->checkAuth()) {
+                 if($id_article=="" or $id_article==null or !(int)$id_article) return false;
+                 foreach($this->Article->getArticle($id_article) as $row){
+                   echo   $this->Template->doArticle($row);
+                 }
+                 }
+             }
+             function newArticle(){
+                 
+                   if($this->User->checkAuth()) {
+                $id_user=(int)$this->session->userdata('id');
+                    $text=$this->Filter->doHTML($this->input->post("text"));
+                    $title=$this->Filter->doHTML($this->input->post("title"));
+                    
+                    if($text==null or $text=="") return false;
+                     if($title==null or $title=="") return false;
+                    if($this->Article->add($id_user,$title,$text)) {
+                         $this->Micronews->add($id_user,"Написал статью  в своем блоге @<a href='#' onclick='getBlog(".$id_user.");return false;'>".$title."</a>@");
+                         echo "1";
+                    }
+                 }
+                 }
+
 
 }
