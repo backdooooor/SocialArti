@@ -69,7 +69,7 @@ return $code;
     $id_video=$data[1];
    
 
-    $code='<object   id="vk" width="200" height="200"><param name="movie" value="http://www.youtube.com/v/'.$id_video.'=1&amp;hl=ru_RU"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'.$id_video.'?fs=1&amp;hl=ru_RU" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="200" height="200"></embed></object>';
+    $code='<object   id="vk" width="200" height="200"><param name="movie" value="http://www.youtube.com/v/'.$id_video.'=1&amp;hl=ru_RU"></param><param name="wmode" value="opaque" /><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'.$id_video.'?fs=1&amp;hl=ru_RU" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="200" height="200"></embed></object>';
    
     return $code;
 

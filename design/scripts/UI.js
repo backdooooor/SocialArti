@@ -1,7 +1,8 @@
 
 var base_url="http://arti.nx0.ru/";
 var auth=false;
-
+checkNewMessage();
+getRequest();
 function begin(){
    
   	$.post(
@@ -15,10 +16,14 @@ if(data=="1"){
      
     
      $("#isauth").show();
+     $("#menu_search").show();
+      $("#menu_arti").show();
 doUpdate();
 
 }else {
   $("#isauth").hide();
+   $("#menu_search").hide();
+      $("#menu_arti").hide();
   doNotAuth();
 }
 
@@ -29,17 +34,16 @@ doUpdate();
     
 }
 function doNotAuth(){
-
+$("#login").html('<form onSubmit="doFastAuth();return false;"><input type="text" id="fast_email" value="@"/>&nbsp;&nbsp;<input type="password" id="fast_pass" value="****"/>&nbsp;<input type="submit" value="Войти"/></form>&nbsp;<a href="#" onclick="doPartipians();return false;">Регистрация</a>');
 $("#auth_title").html("Авторизация");
 
 $("#auth").html('<h2>Авторизация</h2><p> <div id="auth_error"></div><br/><form  method="POST" onSubmit="doAuth();return false;">email <br/><input type="text" name="email" id="email" /><br/>Пароль <br/><input type="password" name="pass" id="pass" /><br/><input type="submit" value="Войти"/></form></p>');
 $("#reg_title").html("Регистрация");
 $("#reg").html('<h2>Регистрация</h2><p><div id="reg_error"></div><br/><form  method="POST" onSubmit="doRegister();return false;">email <br/><input type="text" name="email" id="reg_email" /><br/>Фамилия<br/><input type="text" name="surname" id="reg_surname" /><br/>Имя <br/><input type="text" name="name" id="reg_name" /><br/>Отчество <br/><input type="text" name="otch" id="reg_otch" /><br/>Откуда ты<br/><input type="text" name="location" id="reg_location" /><br/>Пароль <br/><input type="password" name="pass1" id="reg_pass1" /><br/>Повтор Пароля <br/><input type="password" name="pass2" id="reg_pass2" /><br/><input type="submit" value="Регистрация"/></form> </p>');
 $("#first_title").html("Введение");
-$("#first").html("<h2>Введение</h2><p>Здесь будет какой то текст о великой socialArti</p>");
-
-$("#pos").html("<h2>О проекте</h2><p>Здесь будет какой то текст о великом Артемии</p>");
+getFirst();
 $("#pos_title").html("О проекте!");
+getAbout();
 }
     function doAuth(){
 if(!/^\w+[a-zA-Z0-9_.-]*@{1}\w{1}[a-zA-Z0-9_.-]*\.{1}\w{2,4}$/.test(jQuery("#email").val())) {
@@ -146,9 +150,11 @@ $("#auth_title").html("Моя страница");
 $("#auth").html(data);
 $("#reg_title").html("Поиск..");
 $("#reg").html("<h2>Человекоидный поиск</h2><p ><form onsubmit='doSearch();return false'><input type=text size=65 id='search'><br/><input type=submit value='Поиск...'></form><br><div id='result'></div></p>")
-
+ $("#menu_search").show();
+      $("#menu_arti").show();
 $("#first_title").html("МикроNews");
 $("#pos_title").html("Мои друзья");
+doEmail();
 getFriends();
    }
  }
@@ -163,7 +169,8 @@ getFriends();
 
      },
  function(data){
-
+ $("#menu_search").show();
+      $("#menu_arti").show();
 $("#auth_title").html("Cтраница пользователя");
 
 $("#reg_title").html("Поиск..");
@@ -256,21 +263,19 @@ myMicronews();
 
      },
  function(data){
- $("#windowTopContent").html("Входящие сообщения");
-  $("#windowContent").html(data);
 
-    $("#window").show();
-
+ doUpNotify(data, "Входящие сообщения", "270px", "500px");
  }
 );
      
     }
 function doNewMessage(){
- $("#windowTopContent").html("Написать новое сообщение");
- $("#windowContent").html("<form  method='POST' onSubmit='doSendMessage();return false;'>Кому <select name='fancySelect' id='to_user' class='makeMeFancy'> </select><br>Текст сообщения <br><textarea  name='name_text' id='text_mes' rows=3 cols=35></textarea><br><input type=submit value='Отправить'></form>");
+  var data="<form  method='POST' onSubmit='doSendMessage();return false;'>Кому <select name='fancySelect' id='to_user' class='makeMeFancy'> </select><br>Текст сообщения <br><textarea  name='name_text' id='text_mes' rows=3 cols=35></textarea><br><input type=submit value='Отправить'></form>";
+  doUpNotify(data, "Написать новое сообщение", "270px", "500px");
+  
   doMasSelect();
 
-  $("#window").show();
+  
 
 
 }
@@ -416,11 +421,10 @@ function doTO_User(id_user,title){
 
  
     var str="<option value="+id_user+" data-skip='1' data-html-text='"+title+"'>"+title+"</option>"
-      $("#windowTopContent").html("Написать новое сообщение для " + title);
- $("#windowContent").html("<form  method='POST' onSubmit='doSendMessage("+id_user+");return false;'>Кому <select name='fancySelect' id='to_user' class='makeMeFancy'>"+str+"</select><br>Текст сообщения <br><textarea  name='name_text' id='text_mes' rows=3 cols=35></textarea><br><input type=submit value='Отправить'></form>");
+ var data="<form  method='POST' onSubmit='doSendMessage("+id_user+");return false;'>Кому <select name='fancySelect' id='to_user' class='makeMeFancy'>"+str+"</select><br>Текст сообщения <br><textarea  name='name_text' id='text_mes' rows=3 cols=35></textarea><br><input type=submit value='Отправить'></form>";
+  doUpNotify(data, "Написать новое сообщение для " + title , "270px", "500px");
   doSelect();
-
-  $("#window").show();
+    
  
 }
 
@@ -448,8 +452,9 @@ if(data!="0"){
  $("#incmessage").html('<img src="'+base_url+'design/menu/hot.png" width="50px" height="50px" title="У вас '+ data +'  новых сообщений" />')
 }else {
 $("#incmessage").html('<img src="'+base_url+'design/menu/incomming.png" width="50px" height="50px" title="Входящие сообщения" />');
- setTimeout(checkNewMessage, 1000);
+ 
 }
+setTimeout(checkNewMessage, 1000);
  }
 );
 }
@@ -486,11 +491,9 @@ doUpdate_profile();
 );
 }
 function doAddFriends(id_user,title,foto){
-  $("#windowTopContent").html("Добавить в друзья " + title);
- $("#windowContent").html("<table><tr><td>"+ title+"<img src='"+foto+"' width='100px' height='100px'/></td><td><form onSubmit='addFriend("+id_user+")'>Вы уверены что знаете этого человека?<a id='link_zapros' href='#' onclick='doShow_form();'>Добавить текст<a><br><textarea rows=3 cols=20 id='zapros_text' style='display:none'></textarea><br><input type=submit value='Добавить в друзья'></form></td></tr></table>");
+ var data="<table><tr><td>"+ title+"<img src='"+foto+"' width='100px' height='100px'/></td><td><form onSubmit='addFriend("+id_user+")'>Вы уверены что знаете этого человека?<a id='link_zapros' href='#' onclick='doShow_form();'>Добавить текст<a><br><textarea rows=3 cols=20 id='zapros_text' style='display:none'></textarea><br><input type=submit value='Добавить в друзья'></form></td></tr></table>";
+  doUpNotify(data, "Добавить в друзья " + title , "270px", "500px");
 
-
-  $("#window").show();
 }
 function doShow_form(){
     $("#link_zapros").hide();
@@ -518,9 +521,7 @@ function getRequest(){
      },
  function(data){
   if(data!="") {
- $("#windowTopContent").html("Запросы на добавление в друзья ");
- $("#windowContent").html(data);
- $("#window").show();
+  doUpNotify(data, "Запросы на добавление в друзья" , "270px", "500px");
   }
  
     setTimeout(getRequest, 1001);
@@ -559,7 +560,7 @@ skype:edit_skype
  }
 );
 
-doNotify("Контактные данные успешно обновлены!");
+doUpNotify("Сохранено!", "Уведомление" , "150px", "270px");
 }
  function doLoadPhoto(){
 
@@ -592,7 +593,7 @@ var button = $('#load_photo');
 							this.enable();
                                                         $("#user_photo").attr("src", response);
                                                          
-                                                         doNotify("успешно загружено!");
+                                                         doUpNotify("успешно загружено!", "Уведомление" , "150px", "270px");
                                                          myMicronews();
                                                         }
 							// РїРѕРєР°Р·С‹РІР°РµРј С‡С‚Рѕ С„Р°Р№Р» Р·Р°РіСЂСѓР¶РµРЅ
@@ -629,12 +630,14 @@ var button = $('#load_avatar');
                                                           
                                                         if(response=="0"){
 
-                                                            doNotify('При загрузке файла произошла ошибка,попробуйте еще раз');
+
+                                                            doUpNotify("При загрузке файла произошла ошибка,попробуйте еще раз", "Уведомление" , "150px", "270px");
                                                         } else {
 							this.enable();
                                                         $("#group_avatar").attr("src", response);
 
-                                                         doNotify("успешно загружено!");
+
+                                                         doUpNotify("успешно загружено!", "Уведомление" , "150px", "270px");
                                                          myMicronews();
                                                         }
 							// РїРѕРєР°Р·С‹РІР°РµРј С‡С‚Рѕ С„Р°Р№Р» Р·Р°РіСЂСѓР¶РµРЅ
@@ -703,9 +706,7 @@ doNotify("Ваши данные успешно сохранены!");
 Описание Группы<br>\n\
 <textarea  id='gr_description'rows=3 cols=35></textarea><br>\n\
 <input type=submit value='Создать'><div id='gr_error'></div></form>";
-            $("#windowTopContent").html("Создание группы");
- $("#windowContent").html(text);
- $("#window").show();
+ doUpNotify(text, "Создание группы" , "270px", "500px");
      }
  }
  function CreateGroup(){
@@ -732,7 +733,7 @@ if(data=="1")
     {
         $("#window").hide();
         myMicronews();
-        doNotify("Группа успешно создана!");
+        doUpNotify("Группа успешно создана!", "Уведомление" , "150px", "270px");
 
     }else {
        $("#gr_error").html("Произошла ошибка");
@@ -798,7 +799,7 @@ if(data=="1") {
 var group_name=$("#group_name").val();
 var group_desc=$("#group_description").val();
 if(group_name=="") {
-    doNotify("Название групы не может быть пустым");
+    doUpNotify("Название группы не может быть пустым", "Уведомление" , "150px", "270px");
     return false;
 }
   	$.post(
@@ -813,7 +814,7 @@ name:group_name
  }
 );
 
-doNotify("Контактные данные успешно обновлены!");
+doUpNotify("Контактные данные успешно обновлены", "Уведомление" , "150px", "270px");
 }
 function doJoinGroup(id_group){
  	$.post(
@@ -826,7 +827,7 @@ function doJoinGroup(id_group){
 if(data="1"){
     $("#group_user").html("Выйти из группы");
     $("#group_user").attr("onclick", "doExitGroup("+id_group+");return false;");
-    doNotify("Вы успешно вступили в группу");
+   doUpNotify("Вы успешно вступили в группу!", "Уведомление" , "150px", "270px");
 }
  }
 );
@@ -843,7 +844,7 @@ function doExitGroup(id_group){
 if(data=="1"){
     $("#group_user").html("Вступить в группу");
     $("#group_user").attr("onclick", "doJoinGroup("+id_group+");return false;");
-    doNotify("Вы успешно покинули группу");
+   doUpNotify("Вы успешно покинули группы", "Уведомление" , "150px", "270px");
 }
  }
 );
@@ -891,7 +892,7 @@ else {
             $("#forum_text").text("");
             getTalks(id_talk);
      }
-            doNotify("Сообщение успешно опубликовано!");
+            doUpNotify("Сообщение успешно опубликовано!", "Уведомление" , "150px", "270px");
             
  }
 );
@@ -933,9 +934,8 @@ function doFlash(){
        //alert(data);
      if(data=="") data="Приложения не найдены!";
      
-      $("#windowTopContent").html("Приложения");
-  $("#windowContent").html(data);
-    $("#window").show();
+     
+    doUpNotify(data, "Приложения" , "400px", "400px");
  }
 );
 }
@@ -944,13 +944,7 @@ function showFlash(id){
 
 var str= $("#flash_"+id).html();
 
- $("#windowTopContent").html("Приложение");
-  $("#windowContent").html(str);
-    $("#window").css('width','400px');
-     $("#window").css('height','400px');
-  $("#windowContent").css('width','400px');
-   $("#windowContent").css('height','400px');
-    $("#window").show();
+    doUpNotify(str, "Приложение" , "400px", "400px");
 }
 function getBlog(id_user){
     	$.post(
@@ -963,9 +957,8 @@ function getBlog(id_user){
       
      if(data=="") data="Статьи не найдены!";
 
-      $("#windowTopContent").html("Статьи");
-  $("#windowContent").html(data);
-    $("#window").show();
+
+    doUpNotify(data, "Статьи" , "800px", "800px");
  }
 );
 }
@@ -980,9 +973,7 @@ function doArticle(id){
 
      if(data=="") data="Статья не найдена!";
 
-      $("#windowTopContent").html("Статья");
-  $("#windowContent").html(data);
-    $("#window").show();
+      doUpNotify(data, "Статья" , "800px", "800px");
  }
 );
 }
@@ -991,11 +982,10 @@ function doNewArticle(){
      return false;
  }
  var tmp='<form onSubmit="addArticle();return false;">Название<br>\n\
-<input type=text  value="" id="article_title"><br>Текст статьи(HTML OFF)<br><textarea id="article_text" rows=6 cols=35></textarea><br>\n\
+<input type=text size=100 value="" id="article_title"><br>Текст статьи(HTML OFF)<br><textarea id="article_text" rows=6 cols=70></textarea><br>\n\
 <input type=submit value="Создать"></form>';
-  $("#windowTopContent").html("Создание статьи");
-  $("#windowContent").html(tmp);
-    $("#window").show();
+
+    doUpNotify(tmp, "Создание статьи" , "350px", "800px");
 }
 function addArticle(){
    var arti_title=$("#article_title").val();
@@ -1015,11 +1005,209 @@ title:arti_title
          data="Статья успешно опубликована!";
          myMicronews();
      }
-      $("#windowTopContent").html("Статья");
-  $("#windowContent").html(data);
-    $("#window").show();
+      doUpNotify("Статья успешно опубликована!", "Уведомление" , "150px", "270px");
  }
 );
 }
+function  getAbout(){
+      	$.post(
+  '/./index.php/ajax/getAbout/',
+  {
+     },
+ function(data){
+$("#pos").html(data);
 
 
+ }
+);
+}
+function  getFirst(){
+      	$.post(
+  '/./index.php/ajax/getFirst/',
+  {
+     },
+ function(data){
+
+$("#first").html(data);
+
+
+ }
+);
+}
+function doSearchUP(){
+ $("#search_panel").attr("size","70");
+  $("#search_panel").attr("value","");
+  $("#search_select").show();
+  $("#hide1").hide();
+   $("#hide2").hide();
+    $("#hide3").hide();
+}
+function doSearchDown(){
+   $("#search_panel").attr("size","15");
+    $("#search_panel").attr("value","Поиск");
+      $("#search_select").hide();
+      $("#hide1").show();
+         $("#hide2").show();
+            $("#hide3").show();
+}
+   function doSearchPanel(){
+      var opt=$("#search_select").val();
+      
+       if(!auth) return false;
+     var str=$("#search_panel").val();
+
+//$("#result").html("Попытка что то найти,ну разве это не круто аа?))" + $("#search").val());
+              	$.post(
+  '/./index.php/ajax/doSearch/'+opt,
+  {
+search:str
+     },
+ function(data){
+ doUpNotify("<h2>Результаты по запросу</h2> " + data,"Человекоидный поиск","700px","700px");
+
+  
+
+ }
+);
+    }
+
+function doUpNotify(text,title,height,width){
+ 
+ var int_height=parseInt(height)-50;
+ var int_width=parseInt(width)-50;
+ $("#windowTopContent").html(title);
+  $("#windowContent").html(text);
+  if(height!=null) {
+   $("#window").css('height',height);
+       $("#windowBottomContent").css('height',height);
+   $("#windowContent").css('height',int_height + "px");
+  }
+  if(width!=null){
+      $("#window").css('width',width);
+     
+   $("#windowContent").css('width',int_width + "px");
+  }
+   
+    $("#window").show();
+    
+}
+function doCreateApp(){
+    var tmp="<form onSubmit='addApp();return false;'>Название приложения<br>\n\
+<input type=text  id='app_title'><br>Описание<br><textarea id='app_decs' rows=3 cols=20></textarea>\n\
+<br><input type=submit value='Добавить'></form>";
+    doUpNotify(tmp, "Добавление приложения", "270px", "500px");
+}
+function addApp(){
+var app_title=$("#app_title").val();
+var  app_decs=$("#app_decs").val();
+           	$.post(
+  '/./index.php/ajax/addApp/',
+  {
+title:app_title,
+description:app_decs
+     },
+ function(data){
+  
+ if(data!="")
+     {
+         var tmp="<h2>Основной этап пройден!</h2><a  id='load_avatar' href='#' onclick='doLoadApp("+data+");return false'>Загрузка приложения</a></h2>";
+         doUpNotify(tmp, "Добавление приложения", "270px", "500px");
+     }
+
+
+ }
+);
+}
+ function doLoadApp(id){
+
+
+var button = $('#load_avatar');
+  $.ajax_upload(button, {
+						action : 'statics/load_flash/' + id ,
+						name : 'myfile',
+						onSubmit : function(file, ext) {
+							// РїРѕРєР°Р·С‹РІР°РµРј РєР°СЂС‚РёРЅРєСѓ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+
+
+							/*
+							 * Р’С‹РєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ РЅР° РІСЂРµРјСЏ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+							 */
+							this.disable();
+
+						},
+						onComplete : function(file, response) {
+							// СѓР±РёСЂР°РµРј РєР°СЂС‚РёРЅРєСѓ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р°
+							//$("img#load").attr("src", "loadstop.gif");
+							//$("#uploadButton font").text('Р—Р°РіСЂСѓР·РёС‚СЊ');
+
+							// СЃРЅРѕРІР° РІРєР»СЋС‡Р°РµРј РєРЅРѕРїРєСѓ
+
+                                                        if(response=="0"){
+
+
+                                                            doUpNotify("При загрузке файла произошла ошибка,попробуйте еще раз", "Уведомление" , "150px", "270px");
+                                                        } else {
+							this.enable();
+                                                        $("#group_avatar").attr("src", response);
+
+
+                                                         doUpNotify("успешно загружено!", "Уведомление" , "150px", "270px");
+                                                         myMicronews();
+                                                        }
+							// РїРѕРєР°Р·С‹РІР°РµРј С‡С‚Рѕ С„Р°Р№Р» Р·Р°РіСЂСѓР¶РµРЅ
+							//$("<li>" + file + "</li>").appendTo("#files");
+
+						}
+					});
+
+
+ }
+ function doEmail(){
+     if(!auth) return false;
+        	$.post(
+  '/./index.php/ajax/getEmail/',
+  {
+     },
+ function(data){
+   $("#login").html(data);
+ }
+);
+ }
+   function doFastAuth(){
+if(!/^\w+[a-zA-Z0-9_.-]*@{1}\w{1}[a-zA-Z0-9_.-]*\.{1}\w{2,4}$/.test(jQuery("#fast_email").val())) {
+	    alert("email некорректный");
+	    return false;
+	    }
+  if($("#fast_pass").val()==""){
+        alert("пароль не может быть пустым!");
+	    return false;
+
+  }
+
+var str1=$("#fast_email").val();
+var str2=$("#fast_pass").val();
+        	$.post(
+  '/./index.php/ajax/auth/',
+  {
+    email:str1,
+    password:str2
+     },
+ function(data){
+
+$("auth_error").html("");
+if(data=="1"){
+ auth=true;
+
+$("#isauth").show();
+doUpdate();
+if(auth==true) {
+                myMicronews();
+}
+}else {
+    auth=false;
+  alert("Некорректные данные!!!");
+}
+
+ }
+);
+    }

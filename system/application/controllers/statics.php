@@ -17,7 +17,7 @@ var $browser;
                   $this->load->model("Micronews");
                    $this->load->model("Group");
                    $this->load->model("Talks");
-
+                    $this->load->model("Flash");
                    if($this->agent->browser()=="Opera") {
                 $this->browser='<link rel="stylesheet" href="'.base_url().'design/css/opera.css" type="text/css" media="screen, projection" />';
                  }
@@ -49,14 +49,17 @@ var $browser;
                       $data["talk"]=$data["talk"]."".$this->Template->doNameTopic($var);
                   }
                  
-                
-                        $mas=unserialize($row->info);
+
+                        $data["panel_login"]="<div id='login'>".$this->session->userdata('email')."</div>&nbsp;";
                        $data["name"]=$mas["name"];
                   $data["title"]=$mas["name"];
                  $data["talk"]="<h2><a href='#' onclick='doTalks(".$id.");return false;'>Создать обсуждение</a></h2>".$data["talk"];
                   //$data["micronews"]="В группе нет новостей!";
 
-                 
+         if($data["content"]=="") {
+              $this->parser->parse('notauth', $data);
+             return "";
+         }
                  $this->parser->parse('group', $data);
                   if($this->browser!=""){
                 echo $this->browser;
@@ -67,6 +70,7 @@ var $browser;
               }
         }
         function profile($nick){
+            if($this->User->checkAuth()){
             $opt="";
             $tmp=explode("id",$nick);
             $id_user="";
@@ -93,11 +97,19 @@ var $browser;
                 }
               if($data["micronews"]=="") $data["micronews"]=="Новостей нет(";
            
-               
+                 if($data["content"]=="") {
+              $this->parser->parse('notauth', $data);
+             return "";
+         }
+            $data["panel_login"]="<div id='login' href='#'>".$this->session->userdata('email')."</div>&nbsp;";
         $this->parser->parse('profile', $data);
  if($this->browser!=""){
                 echo $this->browser;
             }
+        }else {
+            $data["url"]=base_url();
+                  $this->parser->parse('notauth', $data);
+        }
         }
        
 //        function update(){
@@ -214,9 +226,55 @@ if($id_group==null or  $id_group=="" or !(int)$id_group) {
                 }
 
         }
+             function load_flash($id_flash){
+            //TODO:сделать проверку на тип файла!
+                 $auth=false;
+if($id_flash==null or  $id_flash=="" or !(int)$id_flash) {
+    echo "0";
+    return false;
+}
+
+                  if($this->User->checkAuth()){
+
+                    $id_user=(int)$this->session->userdata('id');
+                    foreach($this->Flash->getID($id_flash) as $app){
+                        if((int)$app->user_id!=(int)$id_user) {
+                            return false;
+                        }
+                        $auth=true;
+                    }
+                  
+                         $blacklist = array(".swf");
+ foreach ($blacklist as $item) {
+  if(!preg_match("/$item\$/i", $_FILES['myfile']['name'])) {
+   echo "0";
+  return "";
+   }
+  }
+
+  $uploaddir = 'flash/';
+  $uploadfile = $uploaddir."".$id_flash.".swf";;
+
+  if (move_uploaded_file($_FILES['myfile']['tmp_name'], $uploadfile)) {
+  $this->Flash->edit($id_flash);
+   echo "1";
+  } else {
+   echo "0";
+   return "";
+  }
+
+                    //serialize
+                  
+
+
+
+                }
+
+        }
         function message(){
             if($this->User->checkAuth()){
             $this->load->view("message");
             }
         }
+     
 }

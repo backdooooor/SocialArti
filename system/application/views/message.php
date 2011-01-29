@@ -29,7 +29,7 @@
 
 
 
-    <table><tr><td width="40%" >
+    <table><tr><td>Кто онлайн</td><td>Сообщения</td></tr><tr><td width="40%" >
                 <div id="user_online"></div>
             </td>
             <td >

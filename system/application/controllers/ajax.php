@@ -40,6 +40,7 @@ function _remap1($method){
 		 }
 
     } else {
+        
         echo "()||()";
     }
     }
@@ -97,13 +98,25 @@ function _remap1($method){
               echo "0";
           }
          }
-         function doSearch(){
+         function doSearch($opt=0){
             $search_str=$this->Filter->doHTML($this->input->post("search"));
              //$search_str="Artem";
             $text="";
-            foreach($this->Search->doSearch($search_str) as $row){
-                
+            foreach($this->Search->doSearch($search_str,$opt) as $row){
+                switch($opt){
+                case "0":
                 $text=$text." ".$this->Template->doPreview($row);
+                    break;
+                case "1":
+                $text=$text." ".$this->Template->doGroupPreview($row);
+                    break;
+                 case "2":
+                $text=$text." ".$this->Template->doTopicPreview($row);
+                    break;
+                case "3":
+                    $text=$text." ".$this->Template->doFlash($row);
+                    break;
+                }
             }
           if($text=="") {
               $text="Ничего не найдено!";
@@ -575,6 +588,32 @@ function _remap1($method){
                          echo "1";
                     }
                  }
+                 }
+                 function getAbout(){
+                     $about = $this->config->item('about');
+                     echo $about;
+                 }
+                 function getFirst(){
+                       $first = $this->config->item('first');
+                     echo $first;
+                 }
+                 function addApp(){
+                       if($this->User->checkAuth()) {
+                           $id_user=(int)$this->session->userdata('id');
+                    $title=$this->Filter->doHTML($this->input->post("title"));
+                    $description=$this->Filter->doHTML($this->input->post("description"));
+                    if($title=="" or $title==null ) return false;
+                    if($description=="" or $description==null) return false;
+                    if($id_flash=$this->Flash->add($id_user,$title,$description))
+                    {
+                        echo $id_flash;
+                    }
+                       }
+                 }
+                 function getEmail(){
+                     if($this->User->checkAuth()) {
+                         echo  $this->session->userdata('email');
+                     }
                  }
 
 

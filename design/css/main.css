@@ -1,8 +1,24 @@
   html{font-size:62.5%; }
   #menu_arti {
-  
+
 float: right;
 
+}
+#login{
+    float:left;
+  font-family: "Times roman", courier, serif;
+
+  color:#294f88;
+}
+#menu_search {
+    float: right;
+}
+#logo {
+    float:left;
+}
+#isauth {
+    
+    margin-left:30%;
 }
 		  body{font-size:1.2em;color:#294f88}
 		  .sample{margin:30px;border:1px solid #92cdec;background:#d7e7ff;padding:30px}
@@ -33,17 +49,17 @@ float: right;
 
 
 
-		#accordion-2{width:700px;height:500px;padding:30px;background:#fff;border:1px solid #b5c9e8}
+		#accordion-2{margin-left:15%;width:800px;height:700px;padding:20px;background:#fff;border:1px solid #b5c9e8;}
 		#accordion-2 h2{font-size:2.5em;margin-top:10px}
-		#accordion-2 dl{width:700px;height:500px}
+		#accordion-2 dl{width:800px;height:700px}
 		#accordion-2 dt{line-height:44px;text-align:right;padding:10px 15px 0 0;font-size:1.1em;font-weight:bold;font-family: Tahoma, Geneva, sans-serif;text-transform:uppercase;letter-spacing:1px;background:#fff url(images/slide-title-inactive-2.jpg) 0 0 no-repeat;color:#26526c}
 		#accordion-2 dt.active{cursor:pointer;color:#fff;background:#fff url(design/images/slide-title-active-2.jpg) 0 0 no-repeat}
 		#accordion-2 dt.hover{color:#68889b;}
 		#accordion-2 dt.active.hover{color:#fff}
-		#accordion-2 dd{    overflow: auto;padding:25px;background:url(design/images/slide.jpg) bottom left repeat-x;border:1px solid #dbe9ea;border-left:0;margin-right:3px}
+		#accordion-2 dd{     overflow: auto;padding:25px;background:url(design/images/slide.jpg) bottom left repeat-x;border:1px solid #dbe9ea;border-left:0;margin-right:3px}
 		#accordion-2 .slide-number{color:#68889b;left:10px;font-weight:bold}
 		#accordion-2 .active .slide-number{color:#fff}
 		#accordion-2 a{color:#68889b}
-		#accordion-2 dd img{float:right;margin:0 0 0 30px;position:relative;top:-20px}
+		#accordion-2 dd img{float:right;margin:0 0 0 30px;position:relative;}
 
 		

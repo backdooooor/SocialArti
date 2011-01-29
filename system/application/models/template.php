@@ -19,7 +19,35 @@ $temp=explode("|",$group_mas[$i]);
 $group=$group.'<a href="'.base_url().'/group'.$temp[1].'">'.$temp[0].'</a><br>';
 $i++;
 }
-$code="<h2><form onSubmit='doSaveNS();return false;'><input type=text  id='surname' value='".$masive['surname']."' />&nbsp; <input type=text id='name' value='".$masive['name']."' /><input type=submit value='Сохранить'><br></form></h2><p><form onSubmit='setStatus();return false;' method='POST'><textarea name='status' id='status'  rows=3 cols=35 >".$status."</textarea><br><input type=submit value='Обновить'></form><br/><table><tr><td><img  id='user_photo' src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><a  id='load_photo' href='#' onclick='doLoadPhoto();return false'>Загрузка фотографии</a><br>Действия:<br><a  href='#' onclick='doCreateGroup();return false;'>Создать группу</a><br><a href=''>Создать страницу</a><br><a href='#' onclick='doNewArticle();return false;'>Создать запись</a><br>Группы<br>".$group."<br>Подписки:<br><a href='#'>Read.You</a><br><a href='#' onclick='getBlog(".$id_user.");return false;'><h3>Блог пользователя</h3></a></td><td>Откуда:".$location."<br>Контакты:<form onSubmit='doSaveContact();return false;'><br>icq:<input type=text  id='edit_icq' value='".$masive['icq']."'><br>jabber:<input type=text id='edit_jabber' value='".$masive['jabber']."'><br>skype:<input type=text id='edit_skype' value='".$masive['skype']."'><br><input type=submit value='Сохранить'></form><br></td></tr></table></p>";
+$code="<h2><form onSubmit='doSaveNS();return false;'>
+    <input type=text  id='surname' value='".$masive['surname']."' />&nbsp;
+        <input type=text id='name' value='".$masive['name']."' />
+            <input type=submit value='Сохранить'><br>
+            </form></h2><p><form onSubmit='setStatus();return false;' method='POST'>
+            <textarea name='status' id='status'  rows=3 cols=35 >".$status."</textarea>
+                <br><input type=submit value='Обновить'></form>
+                <br/><table><tr><td><img  id='user_photo' src='".base_url()."photo/".$masive['photo']."'  width=200px height=200px >
+                    <a  id='load_photo' href='#' onclick='doLoadPhoto();return false'>Загрузка фотографии</a>
+                    <br>Группы<br>".$group."<br>Подписки:<br><a href='#'>Read.You</a>
+                        <br><a href='#' onclick='getBlog(".$id_user.");return false;'><h3>Блог пользователя</h3>
+                            </a></td><td>Откуда:".$location."<br>Контакты:
+                                <form onSubmit='doSaveContact();return false;'>
+                                <br>icq:<input type=text  id='edit_icq' value='".$masive['icq']."'>
+                                    <br>jabber:<input type=text id='edit_jabber' value='".$masive['jabber']."'>
+                                        <br>skype:<input type=text id='edit_skype' value='".$masive['skype']."'>
+                                            <br><input type=submit value='Сохранить'></form><br></td></tr></table></p>";
+
+$data['photo']=$masive['photo'];
+$data['name']=$masive['name'];
+$data['surname']=$masive['surname'];
+$data['status']=$status;
+$data['group']=$group;
+$data['location']=$location;
+$data['icq']=$masive['icq'];
+$data['jabber']=$masive['jabber'];
+$data['skype']=$masive['skype'];
+
+//$code=$this->load->view("ajax/editpage",$data);
 return $code;
 
 }
@@ -81,6 +109,39 @@ $code=$code."".$this->doPreview($rows);
      $code="Нет прав для доступа к странице";
  }
  return $code;
+}
+function doGroupPreview($row)
+{
+    //тип группы 0- открытый ,1 закрытый
+ $masive=unserialize($row->info);
+ $profile=unserialize($row->profile);
+ $created=$this->doCreated($row);
+ $users=$masive["participants_id"];
+
+ $add="";
+
+ $new_str=str_replace($this->session->userdata('id').",", "", $users);
+if($users==$new_str){
+  $add="<a id='group_user' href='#' onclick='doJoinGroup(".$row->id_group.");return false;'>Вступить в группу</a>";
+}else {
+    $add="<a id='group_user' href='#' onclick='doExitGroup(".$row->id_group.");return false;'>Выйти из группы</a>";
+}
+
+if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="noavatar.jpg";
+ if($masive["type"]=="1" and strpos($masive["participants_id"], ",".$this->session->userdata('id').",")>0 or $masive["type"]!="1"){
+
+     $code="<table><tr><td><img width=100px height=100px src='".base_url()."photo/club/".$masive['photo']."'><br></td><td><a href='".base_url()."group".$row->id_group."'>".$masive['name']."</a><br>Описание<br>".$masive['description']."<br></td></tr></table>";
+
+ }
+return $code;
+}
+function doTopicPreview($row){
+      $masive=unserialize($row->profile);
+    $name=$masive["surname"]." ".$masive["name"];
+    $title=$row->title;
+    $code="<center><a href='".base_url()."group".$row->id_group."#talks' >".$title."</a><br><a href='".base_url()."id".$row->id."'>".$name."</a></center><br><br><br>";
+
+    return $code;
 }
 //предпросмотр профиля в результах поиска
 function doPreview($row,$opt=0){

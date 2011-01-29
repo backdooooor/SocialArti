@@ -28,7 +28,7 @@ class Flash extends Model {
             );
 
 $this->db->insert('flash', $data);
-$this->db->insert_id();
+return $this->db->insert_id();
     }
     function get(){
          $this->db->select('flash.id_flash,flash.title,users.nick,users.id,users.profile,flash.description');
@@ -37,6 +37,24 @@ $this->db->join('users', 'users.id = flash.id_user','right inner');
 $this->db->order_by("flash.id_flash", "desc");
 $query = $this->db->get();
 return $query->result();
+    }
+    function getID($id){
+      if($id==""  or $id==null or !(int)$id) return false;
+$this->db->from('flash');
+$this->db->where("id_flash",$id);
+$this->db->where("public",1);
+$query = $this->db->get();
+return $query->result();
+    }
+    function edit($id){
+         if($id==""  or $id==null or !(int)$id) return false;
+        $data = array(
+               'public' => "1",
+
+            );
+
+$this->db->where('id_flash', $id);
+$this->db->update('flash', $data);
     }
 }
 ?>
