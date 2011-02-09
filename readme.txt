@@ -23,7 +23,12 @@ SocialArti
 Быстрые сообщения
 
 
-UPD 31.01.2011
+UPD 09.02.2011
+Созданы шаблоны=)
+/system/application/config/socialarti.php
+в $config["themes"]
+пишется название шаблона
+сами шаблоны располагаются   в папке /template
 
 
 Установка
