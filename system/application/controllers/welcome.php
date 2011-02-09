@@ -15,8 +15,13 @@ var $browser;
 	{
                  if($this->browser=="Opera") {
                 $data['browser']='<link rel="stylesheet" href="'.base_url().'design/css/opera.css" type="text/css" media="screen, projection" />';
+                 }else {
+                  $data['browser']='';
                  }
-		$this->load->view('static',$data);
+                 $data['title']=$this->config->item('title');
+                 
+         $this->load->template("base_design", "static",$data);
+		
                 
 	}
 }

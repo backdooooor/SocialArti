@@ -22,6 +22,7 @@ var $browser;
                 $this->browser='<link rel="stylesheet" href="'.base_url().'design/css/opera.css" type="text/css" media="screen, projection" />';
                  }
 	}
+
         function group($id){
             $mas="";
               if($this->User->checkAuth()){
@@ -60,7 +61,8 @@ var $browser;
               $this->parser->parse('notauth', $data);
              return "";
          }
-                 $this->parser->parse('group', $data);
+                
+         $this->load->template("base_design", "group",$data);
                   if($this->browser!=""){
                 echo $this->browser;
             }
@@ -102,7 +104,8 @@ var $browser;
              return "";
          }
             $data["panel_login"]="<div id='login' href='#'>".$this->session->userdata('email')."</div>&nbsp;";
-        $this->parser->parse('profile', $data);
+      
+         $this->load->template("base_design", "profile",$data);
  if($this->browser!=""){
                 echo $this->browser;
             }
@@ -128,9 +131,8 @@ var $browser;
 //        }
 
  function text(){
-           if(!$this->Friends->isFriends("2","3")){
-               echo "0";
-           }
+     $data["panel_login"]="Тестирование прекрасного";
+         $this->load->template("base_design", "index",$data);
         }
         function load_photo(){
             //TODO:сделать проверку на тип файла!
@@ -273,7 +275,7 @@ if($id_flash==null or  $id_flash=="" or !(int)$id_flash) {
         }
         function message(){
             if($this->User->checkAuth()){
-            $this->load->view("message");
+        $this->load->template("base_design", "message");
             }
         }
      

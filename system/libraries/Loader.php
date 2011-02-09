@@ -306,6 +306,111 @@ class CI_Loader {
 	{
 		return $this->_ci_load(array('_ci_view' => $view, '_ci_vars' => $this->_ci_object_to_array($vars), '_ci_return' => $return));
 	}
+        // здесь будут зачатки шаблонизатора
+        //by Artem Tatarinov 
+        function template($title,$view,$vars=array(),$return=false){
+            
+           $template_path=str_replace("system/", "template/".$title.'/'.$view.".tpl", BASEPATH);
+          
+         
+//           if (!file_exists($template_path.'/template/'.$title.'/'.$view.".tpl"))
+//		{
+//			return false;
+//		}
+
+           $template = $this->read_file($template_path);
+           foreach ($vars as $key => $val)
+		{
+			if (is_array($val))
+			{
+				$template = $this->_parse_pair("{".$key."}", $val, $template);
+			}
+			else
+			{
+				$template = $this->_parse_single("{".$key."}", (string)$val, $template);
+			}
+		}
+            
+            
+                 
+            if($return){
+                return $template;
+            }else {
+                
+                echo $template;
+            }
+        }
+        function _parse_single($key, $val, $string)
+	{
+		return str_replace($this->l_delim.$key.$this->r_delim, $val, $string);
+	}
+        function _parse_pair($variable, $data, $string)
+	{
+		if (FALSE === ($match = $this->_match_pair($string, $variable)))
+		{
+			return $string;
+		}
+
+		$str = '';
+		foreach ($data as $row)
+		{
+			$temp = $match['1'];
+			foreach ($row as $key => $val)
+			{
+				if ( ! is_array($val))
+				{
+					$temp = $this->_parse_single($key, $val, $temp);
+				}
+				else
+				{
+					$temp = $this->_parse_pair($key, $val, $temp);
+				}
+			}
+
+			$str .= $temp;
+		}
+
+		return str_replace($match['0'], $str, $string);
+	}
+        function _match_pair($string, $variable)
+	{
+		if ( ! preg_match("|".$this->l_delim . $variable . $this->r_delim."(.+?)".$this->l_delim . '/' . $variable . $this->r_delim."|s", $string, $match))
+		{
+			return FALSE;
+		}
+
+		return $match;
+	}
+        function read_file($file)
+	{
+		if ( ! file_exists($file))
+		{
+			return FALSE;
+		}
+
+		if (function_exists('file_get_contents'))
+		{
+			return file_get_contents($file);
+		}
+
+		if ( ! $fp = @fopen($file, FOPEN_READ))
+		{
+			return FALSE;
+		}
+
+		flock($fp, LOCK_SH);
+
+		$data = '';
+		if (filesize($file) > 0)
+		{
+			$data =& fread($fp, filesize($file));
+		}
+
+		flock($fp, LOCK_UN);
+		fclose($fp);
+
+		return $data;
+	}
 	
 	// --------------------------------------------------------------------
 	
