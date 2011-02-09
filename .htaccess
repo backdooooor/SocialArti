@@ -5,5 +5,5 @@ Options SymLinksIfOwnerMatch
 php_flag output_buffering off 
 
 RewriteEngine on
-RewriteCond $1 !^(index\.php|design|template|flash|photo|template|avatar|robots\.txt)
+RewriteCond $1 !^(index\.php|design|flash|photo|template|avatar|robots\.txt)
 RewriteRule ^(.*)$ /index.php/$1 [L]
