@@ -1,0 +1,1 @@
+<option value='{id_user}"' data-icon='photo/{photo}' data-html-text='{string}'>{string}</option>

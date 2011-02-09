@@ -1,0 +1,1 @@
+{title} :<div id='text'>{text} <div id='data'>{data}</div></div><br>

@@ -1,6 +1,11 @@
 <?
 class Template extends Model {
-
+var $themes=null;
+    function Template(){
+        parent::Model();
+        $this->load->config('socialarti');
+       $this->themes=$this->config->item('themes');
+    }
 function doMyPage($masive){
 $location=$masive["from"];
 $status=$masive["status"];
@@ -19,34 +24,31 @@ $temp=explode("|",$group_mas[$i]);
 $group=$group.'<a href="'.base_url().'/group'.$temp[1].'">'.$temp[0].'</a><br>';
 $i++;
 }
-$code="<h2><form onSubmit='doSaveNS();return false;'>
-    <input type=text  id='surname' value='".$masive['surname']."' />&nbsp;
-        <input type=text id='name' value='".$masive['name']."' />
-            <input type=submit value='Сохранить'><br>
-            </form></h2><p><form onSubmit='setStatus();return false;' method='POST'>
-            <textarea name='status' id='status'  rows=3 cols=35 >".$status."</textarea>
-                <br><input type=submit value='Обновить'></form>
-                <br/><table><tr><td><img  id='user_photo' src='".base_url()."photo/".$masive['photo']."'  width=200px height=200px >
-                    <a  id='load_photo' href='#' onclick='doLoadPhoto();return false'>Загрузка фотографии</a>
-                    <br>Группы<br>".$group."<br>Подписки:<br><a href='#'>Read.You</a>
-                        <br><a href='#' onclick='getBlog(".$id_user.");return false;'><h3>Блог пользователя</h3>
-                            </a></td><td>Откуда:".$location."<br>Контакты:
-                                <form onSubmit='doSaveContact();return false;'>
-                                <br>icq:<input type=text  id='edit_icq' value='".$masive['icq']."'>
-                                    <br>jabber:<input type=text id='edit_jabber' value='".$masive['jabber']."'>
-                                        <br>skype:<input type=text id='edit_skype' value='".$masive['skype']."'>
-                                            <br><input type=submit value='Сохранить'></form><br></td></tr></table></p>";
+$data["surname"]="";
+$data["name"]="";
+$data["photo"]="";
+$data["group"]="";
+$data["id_user"]="";
+$data["location"]="";
+$data["icq"]="";
+$data["jabber"]="";
+$data["skype"]="";
+$data["status"]="";
+$data["surname"]=$masive["surname"];
+$data["name"]=$masive["name"];
+$data["photo"]=$masive['photo'];
+$data["group"]=$group;
+$data["id_user"]=$id_user;
+$data["location"]=$location;
+$data["icq"]=$masive['icq'];
+$data["jabber"]=$masive['jabber'];
+$data["skype"]=$masive["skype"];
+$data["status"]=$status;
 
-$data['photo']=$masive['photo'];
-$data['name']=$masive['name'];
-$data['surname']=$masive['surname'];
-$data['status']=$status;
-$data['group']=$group;
-$data['location']=$location;
-$data['icq']=$masive['icq'];
-$data['jabber']=$masive['jabber'];
-$data['skype']=$masive['skype'];
 
+
+  
+$code=$this->load->template($this->themes, "ajax/mypage",$data,true);
 //$code=$this->load->view("ajax/editpage",$data);
 return $code;
 
@@ -71,9 +73,18 @@ if($users==$new_str){
 
 if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="noavatar.jpg";
  if($masive["type"]=="1" and strpos($masive["participants_id"], ",".$this->session->userdata('id').",")>0 or $masive["type"]!="1"){
+$data["description"]="";
+$data["add"]="";
+$data["created"]="";
+$data["photo"]="";
+$data["name"]="";
+$data["description"]="";
+$data["add"]=$add;
+$data["created"]=$created;
+$data["photo"]=$masive['photo'];
+$data["name"]=$masive['name'];
 
-     $code="<table><tr><td>".$masive['name']."<br>Описание<br>".$masive['description']."<br></td><td><img width=200px height=200px src='".base_url()."photo/club/".$masive['photo']."'><br>".$created."".$add."</td></tr></table><br><h1><a href='#' onclick='doNews();'>Новости</a></h1><h1><a href='#' onclick='doTalk();'>Обсуждения</a></h1><h1><a href='#' onclick='doPartipians();'>Участники</a></h1>";
-
+$code=$this->load->template($this->themes, "ajax/group",$data,true);
  }
 return $code;
 }
@@ -83,8 +94,16 @@ function doEditGroup($row){
  
 if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="noavatar.jpg";
  if($masive["type"]=="1" and strpos($masive["participants_id"], ",".$this->session->userdata('id').",")>0 or $masive["type"]!="1"){
-
-     $code="<table><tr><td><form onSubmit='doEditGroup(".$row->id_group.");return false;'>Название<br><input type='text'  id='group_name' value='".$masive['name']."'><br>Тип группы<br><select><option>Открытая</option><option>Закрытая</option></select><br>Описание<br><textarea rows=5 id='group_description' cols=10>".$masive['description']."</textarea><br><input type=submit value='Сохранить'></form></td><td><img id='group_avatar' width=200px height=200px src='".base_url()."photo/club/".$masive['photo']."'><br><a  id='load_avatar' href='#' onclick='doLoadAvatar(".$row->id_group.");return false'>Загрузка аватара</a></td></tr></table><form onSubmit='setStatusGroup(".$row->id_group.");return false;' method='POST'>Напишите новость!<br><textarea name='status' id='status_group'  rows=3 cols=35 ></textarea><br><input type=submit value='Написать'><br><h1><a href='#' onclick='doNews();'>Новости</a></h1><h1><a href='#' onclick='doTalk();'>Обсуждения</a></h1><h1><a href='#' onclick='doPartipians();'>Участники</a></h1>";
+$data["id_group"]="";
+$data["name"]="";
+$data["description"]="";
+$data["photo"]="";
+//
+$data["id_group"]=$row->id_group;
+$data["name"]=$masive["name"];
+$data["description"]=$masive['description'];
+$data["photo"]=$masive['photo'];
+ $code=$this->load->template($this->themes, "ajax/edit_group",$data,true);
 
  }
 return $code;
@@ -130,16 +149,26 @@ if($users==$new_str){
 if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="noavatar.jpg";
  if($masive["type"]=="1" and strpos($masive["participants_id"], ",".$this->session->userdata('id').",")>0 or $masive["type"]!="1"){
 
-     $code="<table><tr><td><img width=100px height=100px src='".base_url()."photo/club/".$masive['photo']."'><br></td><td><a href='".base_url()."group".$row->id_group."'>".$masive['name']."</a><br>Описание<br>".$masive['description']."<br></td></tr></table>";
-
+  $data["photo"]="";
+     $data["id_group"]="";
+     $data["name"]="";
+     $data["description"]="";
+//
+     $data["photo"]=$masive['photo'];
+     $data["id_group"]=$row->id_group;
+     $data["name"]=$masive['name'];
+     $data["description"]=$masive['description'];
+ $code=$this->load->template($this->themes, "ajax/group_preview",$data,true);
  }
 return $code;
 }
 function doTopicPreview($row){
       $masive=unserialize($row->profile);
-    $name=$masive["surname"]." ".$masive["name"];
-    $title=$row->title;
-    $code="<center><a href='".base_url()."group".$row->id_group."#talks' >".$title."</a><br><a href='".base_url()."id".$row->id."'>".$name."</a></center><br><br><br>";
+    $data["name"]=$masive["surname"]." ".$masive["name"];
+    $data["title"]=$row->title;
+    $data["id_group"]=$row->id_group;
+    $data["id_user"]=$row->id;
+ $code=$this->load->template($this->themes, "ajax/topic_preview",$data,true);
 
     return $code;
 }
@@ -164,15 +193,24 @@ function doPreview($row,$opt=0){
 $title=$masive['surname']." ".$masive['name'];
 $onclick='doTO_User('.$row->id.',"'.$title.'");return false';
 
-$code="<table cellspacing=20
-><tr><td><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href=".base_url()."id".$row->id.">".$masive['surname']." ".$masive['name']."</a><br>".$masive['from']."<br><br><br><br><br></td><td><a href='#' onclick='".$onclick."'>Отправить сообщение</a><br>".$add_friend."<br><br><br><br><br></td></tr></table><br/>";
+$data["photo"]=$masive['photo'];
+$data["id_user"]=$row->id;
+$data["surname"]=$masive['surname'];
+$data['name']=$masive['name'];
+$data["from"]=$masive['from'];
+$data["onclick"]=$onclick;
+$data['add_friend']=$add_friend;
+$code=$this->load->template($this->themes, "ajax/preview",$data,true);
 return $code;
 }
 function doNameTopic($row){
     $masive=unserialize($row->profile);
-    $name=$masive["surname"]." ".$masive["name"];
-    $title=$row->title;
-    $code="<a href='#' onclick='getTalks(".$row->id_talk.");return false;'><h4>".$title."</h4></a><br><a href='".base_url()."id".$row->id."'>".$name."</a><br>";
+    
+      $data["name"]=$masive["surname"]." ".$masive["name"];
+    $data["title"]=$row->title;
+    $data["id_talk"]=$row->id_talk;
+    $data["id_user"]=$row->id;
+ $code=$this->load->template($this->themes, "ajax/name_topic",$data,true);
     return $code;
 
 }
@@ -185,8 +223,12 @@ if($nick==null or $nick=="") $nick=="id".$row->id;
 $title=$masive['surname']." ".$masive['name'];
 
 $answering='';
-$code="<table   cellspacing=20
-><tr><td><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><h3>".$row->title."</h3><br>".$row->text."<br><a href='".base_url()."id".$row->id."'>".$masive['surname']." ".$masive['name']."</a><br></td><td></td></tr></table><br/>";
+$data["photo"]=$masive['photo'];
+$data["title"]=$row->title;
+$data["id_user"]=$row->id;
+$data["surname"]=$masive['surname'];
+$data["name"]=$masive['name'];
+ $code=$this->load->template($this->themes, "ajax/post_topic",$data,true);
 return $code;
 }
 function doProfilePage($masive,$row){
@@ -219,7 +261,20 @@ $group=$group.'<a href="'.base_url().'/group'.$temp[1].'">'.$temp[0].'</a><br>';
 $i++;
 }
 $this->load->helper("url");
-$code="<h2>".$masive['surname']." ".$masive['name']."</h2><p><textarea readonly name='status' id='status'  rows=3 cols=50 >".$status."</textarea><br/><table><tr><td><img src='".base_url()."photo/".$masive['photo']."' align='left' width=200px height=200px ><br>".$send_message."</td><td>Откуда:".$location."<br>Контакты:<br>icq:".$masive['icq']."<br>jabber:".$masive['jabber']."<br>skype:".$masive['skype']."<br>Группы<br>".$group."<br><a href='#' onclick='getBlog(".$row->id.");return false;'><h3>Блог пользователя</h3></a></td></tr></table></p>";
+
+$data["id_user"]=$row->id;
+$data["surname"]=$masive["surname"];
+$data["name"]=$masive["name"];
+$data["photo"]=$masive['photo'];
+$data["group"]=$group;
+
+$data["location"]=$location;
+$data["icq"]=$masive['icq'];
+$data["jabber"]=$masive['jabber'];
+$data["skype"]=$masive["skype"];
+$data["status"]=$status;
+$data['send_message']=$send_message;
+$code=$this->load->template($this->themes, "ajax/profile_page",$data,true);
 return $code;
 }
 function doMicroNews($row,$text,$data){
@@ -239,9 +294,21 @@ function doMicroNews($row,$text,$data){
 
 $nick=$row->nick;
 if($nick==null or $nick=="") $nick=="id".$row->id;
-
-$code="<table cellspacing=20
-><tr><td><a href='".base_url()."id".$row->id."'>".$masive['surname']." ".$masive['name']."</a><br><br><br><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td>".$data."<h3>".$text."</h3><br><br><a href='#' onclick='doComment(".$row->id_mnews.");'>Комментарии</a></td></tr></table><div id='id_".$row->id_mnews."'></div><br/>";
+$micronews["id_user"]="";
+$micronews["surname"]="";
+$micronews["name"]="";
+$micronews["photo"]="";
+$micronews["data"]="";
+$micronews["text"]="";
+$micronews["id_mnews"]="";
+$micronews["id_user"]=$row->id;
+$micronews["surname"]=$masive['surname'];
+$micronews["name"]=$masive['name'];
+$micronews["photo"]=$masive['photo'];
+$micronews["data"]=$data;
+$micronews["text"]=$text;
+$micronews["id_mnews"]=$row->id_mnews;
+$code=$this->load->template($this->themes, "ajax/micronews",$micronews,true);
 return $code;
 }
 function doGroupNews($row,$text,$data){
@@ -258,10 +325,23 @@ function doGroupNews($row,$text,$data){
      $text=$text."<br>".$media_content;
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="noavatar.jpg";
 
+$gr["id_group"]=0;
+$gr["name"]="";
+$gr["photo"]="";
+$gr["data"]="";
 
+$gr["text"]="";
+$gr["id_mnews"]="";
+//
+$gr["id_group"]=$row->id_group;
+$gr["name"]=$masive['name'];
+$gr["photo"]=$masive['photo'];
+$gr["data"]=$data;
 
-$code="<table cellspacing=20
-><tr><td><a href='".base_url()."group".$row->id_group."'>".$masive['name']."</a><br><br><br><img  width=100px height=100px src='".base_url()."photo/club/".$masive['photo']."' align='left' ></td><td>".$data."<h3>".$text."</h3><br><br><a href='#' onclick='doComment(".$row->id_mnews.");'>Комментарии</a></td></tr></table><div id='id_".$row->id_mnews."'></div><br/>";
+$gr["text"]=$text;
+$gr["id_mnews"]=$row->id_mnews;
+$code=$this->load->template($this->themes, "ajax/group_news",$gr,true);
+
 
 return $code;
 }
@@ -270,8 +350,10 @@ function doSelect($row){
       if((int)$this->session->userdata('id')==(int)$row->id) return "";
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
  $string=$masive["surname"]." ".$masive["name"];
-
- $code="<option value='".$row->id."' data-icon='photo/".$masive["photo"]."' data-html-text='".$string."'>".$string."</option>";
+$data["id_user"]=$row->id;
+$data["photo"]=$masive["photo"];
+$data["string"]=$string;
+ $code=$this->load->template($this->themes, "ajax/select",$data,true);
 return $code;
 
 }
@@ -288,36 +370,53 @@ if((int)$row->read==0){
     $style='';
 }
 $answering='doRead('.$row->id_message.');doTO_User('.$row->id_from.',"'.$title.'");return false';
-$code="<table  style='".$style."' cellspacing=20
-><tr><td><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='".base_url()."id".$row->id."'>".$masive['surname']." ".$masive['name']."</a><br><hr>".$row->text."<br><br></td><td><a href='#' onclick='".$answering."'>Ответить</a></td></tr></table><br/>";
+$data["style"]=$style;
+$data["photo"]=$masive['photo'];
+$data["id_user"]=$row->id;
+$data["surname"]=$masive['surname'];
+$data["name"]=$masive['name'];
+$data["text"]=$row->text;
+$data["answering"]=$answering;
+ $code=$this->load->template($this->themes, "ajax/mesage",$data,true);
 return $code;
 }
+//TODO:доделать шаблонизатор
 function doRequest($row){
        $masive=unserialize($row->profile);
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
 $nick=$row->nick;
 if($nick==null or $nick=="") $nick=="id".$row->id;
-
-$code="<table  style='".$style."' cellspacing=20
-><tr><td><img  width=100px height=100px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='".base_url()."".$nick."'>".$masive['surname']." ".$masive['name']."</a><br><hr>".$row->text."<br><br></td></tr></table><br><center><a href='#' onclick='doEditFriend(".$row->id_zapr.",1)'>Принять</a>&nbsp;&nbsp;<a href='#' onclick='doEditFriend(".$row->id_zapr.",0)'>Отказаться</a></center><br/>";
+$data["phone"]=$masive['photo'];
+$data["surname"]=$masive['surname'];
+$data["name"]=$masive['name'];
+$data["text"]=$row->text;
+$data["id_zapros"]=$row->id_zapr;
+$data["id_user"]=$row->id;
+ $code=$this->load->template($this->themes, "ajax/request",$data,true);
 return $code;
 }
 function doComment($row){
      $masive=unserialize($row->profile);
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
  $nick=="id".$row->id;
+$data["photo"]=$masive['photo'];
+$data["id_user"]=$row->id;
+$data["surname"]=$masive['surname'];
+$data["name"]=$masive['name'];
+$data["text"]=$row->text;
 
-$code="<table  style='".$style."' cellspacing=20
-><tr><td><img  width=25px height=25px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='".base_url()."id".$row->id."'>".$masive['surname']." ".$masive['name']."</a><br><hr>".$row->text."<br><br></td></tr></table><br><br/>";
+$code=$this->load->template($this->themes, "ajax/comment",$data,true);
 return $code;
 }
 function doCreated($row){
      $masive=unserialize($row->profile);
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
 $nick=="id".$row->id;
-
-$code="<table  style='".$style."' cellspacing=20
-><tr><td><img  width=25px height=25px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='".base_url()."id".$row->id."'>".$masive['surname']." ".$masive['name']."</a><br><hr>Создатель групы<br><br></td></tr></table><br>";
+$data["photo"]=$masive['photo'];
+$data["surname"]=$masive['surname'];
+$data["name"]=$masive['name'];
+$data["id_user"]=$row->id;
+$code=$this->load->template($this->themes, "ajax/created",$data,true);
 return $code;
 }
 function doOnline_User($row){
@@ -328,14 +427,22 @@ if($id_user==null or $id_user=="" or !(int)$id_user) return false;
 if($profile['surname']=="" or $profile['surname']==null) return false;
 if($profile['name']=="" or $profile['name']==null) return false;
  if(!isset($profile["photo"]) or $profile["photo"]==null or $profile["photo"]=="" ) $profile["photo"]="nophoto.jpg";
- $code="<table  style='".$style."' cellspacing=20
-><tr><td><img  width=25px height=25px src='".base_url()."photo/".$profile['photo']."' align='left' ></td><td><a  href='".base_url()."id".$id_user."' onclick='fastURL(this);return false;';>".$profile['surname']." ".$profile['name']."</a><br><hr>".$profile['status']."<br><br></td></tr></table><hr><br/>";
+$data["name"]=$profile["name"];
+$data["surname"]=$profile["surname"];
+$data["photo"]=$profile["photo"];
+$data["id_user"]=$id_user;
+$data["status"]=$profile["status"];
+ $code=$this->load->template($this->themes, "ajax/fast_list",$data,true);
 return $code;
 }
 function doFast_Message($row){
   $profile=unserialize($row->profile);
-                         $title="<a  href='".base_url()."id".$row->id."' onclick='fastURL(this);return false;'>".$profile["surname"]." ".$profile["name"]."</a>";
-$code=$title." :<div id='text'>".$row->text." <div id='data'>".$row->data."</div></div><br>";
+   $title="<a  href='".base_url()."id".$row->id."' onclick='fastURL(this);return false;'>".$profile["surname"]." ".$profile["name"]."</a>";
+$data["title"]=$title;
+$data["text"]=$row->text;
+$data["data"]=$row->data;
+   
+   $code=$this->load->template($this->themes, "ajax/fast_message",$data,true);
 return $code;
 }
 function doFlash($row){
@@ -343,14 +450,11 @@ function doFlash($row){
  if(!isset($masive["photo"]) or $masive["photo"]==null or $masive["photo"]=="" ) $masive["photo"]="nophoto.jpg";
  $nick=="id".$row->id;
 
-$code="<table  style='".$style."' cellspacing=20
-><tr><td><img  width=25px height=25px src='".base_url()."photo/".$masive['photo']."' align='left' ></td><td><a href='#' onclick='showFlash(".$row->id_flash.")'>".$row->title."</a><br><hr>".$row->description."<br><br></td></tr></table><br><div id='flash_".$row->id_flash."' style='display:none;'><object data='".base_url()."flash/".$row->id_flash.".swf' type='application/x-shockwave-flash' height='400px' width='400px'>
-<param value='true' name='menu'/>
-<param value='high' name='quality'/>
-<param value='transparent' name='wmode'/>
-<div>Тест для поисковиков и браузеров не поддерживающих плагины</div>
-<embed type='application/x-shockwave-flash' src='".base_url()."flash/".$row->id_flash.".swf' width='400px' height='400px' />
-</object></div><br/>";
+$data["photo"]=$masive['photo'];
+$data["id_flash"]=$row->id_flash;
+$data["title"]=$row->title;
+$data["description"]=$row->description;
+ $code=$this->load->template($this->themes, "ajax/app_show",$data,true);
 return $code;
 }
 function doListArticle($row){
@@ -359,7 +463,11 @@ function doListArticle($row){
   $masive=unserialize($row->profile);
   $name=$masive["surname"]." ".$masive["name"];
   $id_user=$row->id;
-  $code="<center><a href='#' onclick='doArticle(".$id_article.");return false;'><h2>".$title."</h2></a><br>Написал <a href='".base_url()."/id".$id_user."'>".$name."</a></center><br>";
+ $data["id_article"]=$id_article;
+ $data["id_user"]=$id_user;
+ $data["name"]=$name;
+ $data["title"]=$title;
+ $code=$this->load->template($this->themes, "ajax/blog_list",$data,true);
   return $code;
 
 }
@@ -370,7 +478,11 @@ function doArticle($row){
   $name=$masive["surname"]." ".$masive["name"];
   $id_user=$row->id;
   $text=$row->text;
-  $code="<h2>".$title."</h2><p>".$text."</p><br>Написал <a href='".base_url()."id".$id_user."'>".$name."</a>";
+$data["title"]=$title;
+$data["text"]=$text;
+$data["id_user"]=$id_user;
+$data["name"]=$name;
+$code=$this->load->template($this->themes, "ajax/blog_article",$data,true);
   return $code;
 }
 }

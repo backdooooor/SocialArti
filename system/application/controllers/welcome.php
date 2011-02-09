@@ -19,8 +19,8 @@ var $browser;
                   $data['browser']='';
                  }
                  $data['title']=$this->config->item('title');
-                 
-         $this->load->template("base_design", "static",$data);
+              $themes=$this->config->item('themes');
+         $this->load->template($themes, "static",$data);
 		
                 
 	}

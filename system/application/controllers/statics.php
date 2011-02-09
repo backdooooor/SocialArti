@@ -2,6 +2,7 @@
 
 class Statics extends Controller {
 var $browser;
+var $themes;
 	function Statics()
 	{
 		parent::Controller();
@@ -21,6 +22,7 @@ var $browser;
                    if($this->agent->browser()=="Opera") {
                 $this->browser='<link rel="stylesheet" href="'.base_url().'design/css/opera.css" type="text/css" media="screen, projection" />';
                  }
+                  $this->themes=$this->config->item('themes');
 	}
 
         function group($id){
@@ -62,7 +64,7 @@ var $browser;
              return "";
          }
                 
-         $this->load->template("base_design", "group",$data);
+         $this->load->template($this->themes, "group",$data);
                   if($this->browser!=""){
                 echo $this->browser;
             }
@@ -105,7 +107,7 @@ var $browser;
          }
             $data["panel_login"]="<div id='login' href='#'>".$this->session->userdata('email')."</div>&nbsp;";
       
-         $this->load->template("base_design", "profile",$data);
+         $this->load->template($this->themes, "profile",$data);
  if($this->browser!=""){
                 echo $this->browser;
             }
@@ -132,7 +134,7 @@ var $browser;
 
  function text(){
      $data["panel_login"]="Тестирование прекрасного";
-         $this->load->template("base_design", "index",$data);
+         $this->load->template($this->themes, "index",$data);
         }
         function load_photo(){
             //TODO:сделать проверку на тип файла!
@@ -275,8 +277,10 @@ if($id_flash==null or  $id_flash=="" or !(int)$id_flash) {
         }
         function message(){
             if($this->User->checkAuth()){
-        $this->load->template("base_design", "message");
+        $this->load->template($this->themes, "message");
             }
+
+
         }
      
 }
